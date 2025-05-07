@@ -1,0 +1,354 @@
+/* ===== Your Live Site Palette ===== */
+:root {
+    --sidebar-bg:    #FF9400;        /* west-side orange */
+    --main-bg:       #2F303A;        /* outer-space charcoal */
+    --text-light:    #FFFFFF;        /* white text */
+    --accent:        #FF9400;        /* same orange */
+    --overlay:       rgba(0,0,0,0.6);/* semi-transparent black */
+  }
+  
+  /* ===== Reset & Base ===== */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--main-bg);
+    color: var(--text-light);
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  
+  /* ===== Layout Utilities ===== */
+  .container {
+    width: 90%;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .panel {
+    padding: 4rem 0;
+  }
+  
+  /* ===== Navbar ===== */
+  .navbar {
+    background: var(--sidebar-bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+.logo {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 600;
+    color: var(--main-bg);
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  .nav-links li a {
+    font-weight: 500;
+    color: var(--main-bg);
+  }
+  .nav-toggle {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--main-bg);
+  }
+  
+  /* ===== About Section ===== */
+.about-section h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .about-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .about-photo {
+    flex-shrink: 0;
+    width: clamp(120px, 15vw, 240px);
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+.about-text {
+    flex: 1;
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
+  
+  /* ===== Experience Cards ===== */
+  .card {
+    background: var(--text-light);
+    color: var(--main-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+  .card .date {
+    float: right;
+    font-size: 0.9rem;
+    color: var(--accent);
+  }
+  .card ul {
+    list-style: disc;
+    margin-left: 1.25rem;
+  }
+  
+  /* ===== Skills Grid ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+    gap: 1rem;
+    list-style: none;
+  }
+  .skills-grid li {
+    background: var(--text-light);
+    color: var(--main-bg);
+    padding: 0.75rem;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.95rem;
+    border: 1px solid var(--accent);
+  }
+  
+  /* ===== Section Headings ===== */
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    text-align: center;
+    color: var(--text-light);
+  }
+  
+  /* ===== Footer ===== */
+  footer {
+    background: var(--sidebar-bg);
+    color: var(--main-bg);
+    text-align: center;
+    padding: 1rem 0;
+  }
+  
+  /* ===== Mobile Menu ===== */
+  @media (max-width: 768px) {
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--sidebar-bg);
+      flex-direction: column;
+      width: 200px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .nav-links.open {
+      transform: translateX(0);
+    }
+    .nav-toggle {
+      display: block;
+    }
+  }
+  
+  /* ===== About Section Mobile Stack ===== */
+  @media (max-width: 600px) {
+    .about-content {
+      flex-direction: column;
+      text-align: center;
+    }
+    .about-text {
+      margin-top: 1rem;
+    }
+  }
+
+/* Icon sizing for GitHub and YouTube links in experience cards */
+.link-icon {
+  width: 32px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+.card-links a:last-child .link-icon {
+  margin-right: 0; /* no extra margin after the last icon */
+}
+.card-links {
+  margin-top: 1rem; /* space above icons */
+  display: flex;
+  gap: 0.5rem;      /* horizontal gap between icons */
+}
+
+/* Skill icon styling – responsive sizing */
+.skill-icon {
+  display: block;
+  width: clamp(40px, 8vw, 64px);
+  height: auto;
+  margin: 0 auto 0.75rem;
+}
+
+/* Ensure skill icons and labels stack vertically and are centered */
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.skill-item h3 {
+  margin-top: 0.5rem;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--main-bg);
+}
+/* Extra spacing between Skills heading and skill icons */
+#skills h2 {
+  margin-bottom: 3rem;
+}
+
+/* Education icon sizing */
+.education-icon {
+  width: clamp(60px, 10vw, 120px);
+  height: auto;
+}
+
+/* Icon sizing for GitHub and YouTube links in experience cards */
+.link-icon {
+  width: 32px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+.card-links a:last-child .link-icon {
+  margin-right: 0; /* no extra margin after the last icon */
+}
+
+/* Contact section icon layout */
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.contact-icon {
+  width: clamp(40px, 6vw, 64px);
+  height: auto;
+  display: block;
+}
+
+/* Hover interactions */
+
+/* Navigation link hover */
+.nav-links li a:hover {
+  color: var(--text-light);
+  text-decoration: underline;
+}
+
+/* Menu toggle hover */
+.nav-toggle:hover {
+  cursor: pointer;
+  color: var(--accent);
+}
+
+/* Experience card hover */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Skill item hover */
+.skill-item {
+  transition: transform 0.3s ease;
+}
+.skill-item:hover {
+  transform: translateY(-4px);
+}
+
+/* Icon hover (GitHub, YouTube, contact icons) */
+.link-icon:hover,
+.contact-icon:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+/* ===== Experience Cards: Card Image ===== */
+.card-image {
+  width: 100%;
+  height: clamp(150px, 25vh, 300px);
+  object-fit: cover;
+  border-radius: 4px 4px 0 0;
+  display: block;
+}
+
+/* Education section spacing */
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* space between each school item */
+}
+
+/* Layout each education item alongside its logo */
+.education-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.education-text {
+  flex: 1;
+  color: var(--text-light);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.4;
+}
+
+/* Spacing between Education heading and content */
+#education h2 {
+  margin-bottom: 4rem;
+}
+#
+/* GIF placeholder styling in experience cards */
+.card-gif {
+  margin: 1rem 0;
+  text-align: center;
+}
+.card-gif-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Spacing between Relevant Experience heading and cards */
+#experience h2 {
+  margin-bottom: 2rem;
+}
