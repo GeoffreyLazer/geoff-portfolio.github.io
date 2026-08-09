@@ -1,4 +1,3 @@
-const assetBase = "https://geoff-portfolio-github-io.vercel.app/img";
 const deviconBase = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
 const simpleIconBase = "https://cdn.jsdelivr.net/npm/simple-icons@v13/icons";
 
@@ -26,12 +25,6 @@ export type Project = {
   details?: ProjectDetails;
   image?: string;
   gallery?: string[];
-  videos?: string[];
-  videoPoster?: string;
-  youtube?: {
-    id: string;
-    title: string;
-  };
   links?: ProjectLink[];
 };
 
@@ -341,8 +334,7 @@ export const projects: Project[] = [
     title: "NFRF Mixed-Reality Ergonomics Platform",
     date: "2026 – Present",
     category: "Mixed-Reality Ergonomics",
-    videos: ["/project-media/nfrf-ergonomics-preview.mp4"],
-    videoPoster: "/project-media/nfrf-ergonomics-poster.jpg",
+    image: "/project-media/nfrf-ergonomics-preview.gif",
     text: "A Meta Quest 3 research platform for reviewing motion, visualizing ergonomic risk, and presenting corrective guidance in mixed reality.",
     bullets: [
       "Synchronized source video, joints, full-body mesh, regional risk scores, and timeline controls through one playback state.",
@@ -367,8 +359,7 @@ export const projects: Project[] = [
     title: "Formwork Safety VR",
     date: "2026 – Present",
     category: "Construction Safety XR",
-    videos: ["/project-media/formwork-safety-vr-preview.mp4"],
-    videoPoster: "/project-media/formwork-safety-vr-poster.jpg",
+    image: "/project-media/formwork-safety-vr-preview.gif",
     text: "A controlled VR experiment for studying how construction workers recognize and respond to acoustic hazard warnings during formwork tasks.",
     bullets: [
       "Built timed two-station trigger/grip formwork interactions and audio-only truck and descending-load hazards.",
@@ -393,8 +384,7 @@ export const projects: Project[] = [
     title: "Volume Rendering & 3D Slicing for Medical Imaging",
     date: "Jan 2025 - Apr 2025",
     category: "Medical XR",
-    videos: ["/project-media/volume-rendering-preview.mp4"],
-    videoPoster: "/project-media/volume-rendering-poster.jpg",
+    image: "/project-media/volume-rendering-preview.gif",
     text: "An XR medical imaging project focused on mapping and slicing volumetric datasets for diagnosis and procedural planning.",
     bullets: [
       "Performed real-time volume rendering of .nii NIFTI and DICOM medical imaging data in XR.",
@@ -431,8 +421,7 @@ export const projects: Project[] = [
     title: "Agricultural Terrain Visualization",
     date: "Sep 2024 - Dec 2024",
     category: "Geospatial XR",
-    videos: ["/project-media/agricultural-terrain-preview.mp4"],
-    videoPoster: "/project-media/agricultural-terrain-poster.jpg",
+    image: "/project-media/agricultural-terrain-preview.gif",
     text: "A Meta Quest 3 visualization system for agricultural terrain, land plot data, and geospatial navigation.",
     bullets: [
       "Visualized agricultural terrain on Meta Quest 3 using QGIS workflows.",
@@ -469,7 +458,7 @@ export const projects: Project[] = [
     title: "Converting Urban Street Scenes Between Daytime and Nighttime",
     date: "Sep 2024 - Dec 2024",
     category: "Computer Vision",
-    videos: ["/project-media/day-night-day.mp4", "/project-media/day-night-night.mp4"],
+    image: "/project-media/day-night-preview.gif",
     text: "A CycleGAN image translation project for unpaired day-to-night conversion while preserving core scene semantics.",
     bullets: [
       "Implemented a CycleGAN model for unpaired daytime-to-nighttime image translation.",
@@ -494,7 +483,7 @@ export const projects: Project[] = [
     title: "Domain Adaptive Learning for Water Body Extraction",
     date: "Sep 2024 - Dec 2024",
     category: "Remote Sensing AI",
-    image: "/project-media/domain-water-style-transfer-result.webp",
+    image: "/project-media/domain-water-preview.gif",
     gallery: [
       "/project-media/domain-water-style-transfer-result.webp",
       "/project-media/domain-water-precision-recall.webp",
@@ -528,8 +517,7 @@ export const projects: Project[] = [
     title: "Shinyonaika 3D - Self Therapy Game",
     date: "Sep 2023 - May 2024",
     category: "AI Game Development",
-    videos: ["/project-media/shinyonaika-3d-preview.mp4"],
-    videoPoster: "/project-media/shinyonaika-3d-poster.jpg",
+    image: "/project-media/shinyonaika-3d-preview.gif",
     text: "A 3D episodic self-therapy game that uses gamified Cognitive Behavioral Therapy scenarios and AI characters.",
     bullets: [
       "Led the team and secured Rs. 100,000 funding.",
@@ -567,7 +555,7 @@ export const projects: Project[] = [
     title: "Shinyonaika 2D - Graphic Novel",
     date: "Jan 2023 - May 2023",
     category: "AI Storytelling",
-    image: `${assetBase}/Shinyonaikav1Demo-ezgif.com-video-to-gif-converter.gif`,
+    image: "/project-media/shinyonaika-2d-preview.gif",
     text: "A 2D branching graphic novel prototype combining mental health research with AI-assisted emotion classification.",
     bullets: [
       "Led the team at Salz AI '21 Hackathon.",
@@ -605,7 +593,7 @@ export const projects: Project[] = [
     title: "Helex VR",
     date: "Dec 2021 - Aug 2022",
     category: "VR Training",
-    image: "/project-media/sih-2022-certificate.jpg",
+    image: "/project-media/helex-preview.gif",
     text: "A VR athlete training environment built in Unity with computer vision feedback for exercise form.",
     bullets: [
       "Won Smart India Hackathon '22 and secured Rs. 100K funding.",
@@ -630,7 +618,7 @@ export const projects: Project[] = [
     title: "Defense Rover",
     date: "Mar 2023 - Mar 2023",
     category: "AI Hackathon",
-    image: "/project-media/aurganon-certificate.jpg",
+    image: "/project-media/defense-rover-preview.gif",
     gallery: [
       "/project-media/aurganon-certificate.jpg",
       "/project-media/aurganon-event-1.jpg",
@@ -660,10 +648,7 @@ export const projects: Project[] = [
     title: "Intelligent Garbage Classification using Deep Learning",
     date: "May 2023 - May 2023",
     category: "Deep Learning",
-    youtube: {
-      id: "D19uHTfwIls",
-      title: "Intelligent Garbage Classification demo",
-    },
+    image: "/project-media/garbage-classification-preview.gif",
     text: "A transfer-learning classification system for garbage recognition.",
     bullets: [
       "Implemented the solution and trained a dataset using VGG16.",
@@ -702,7 +687,7 @@ export const projects: Project[] = [
     title: "MediAssist",
     date: "Apr 2021 - Dec 2021",
     category: "Health App",
-    image: "/project-media/mediassist-icon.png",
+    image: "/project-media/mediassist-preview.gif",
     text: "An Android app for tracking and monitoring chronic patients, vitals, and health condition data.",
     bullets: [
       "Built around chronic patient monitoring and health-condition tracking.",

@@ -9,7 +9,6 @@ import {
   Mail,
   Menu,
   PanelTopOpen,
-  Play,
   Send,
   Sparkles,
   X,
@@ -355,11 +354,11 @@ function useInitialHashScroll() {
       timers.push(window.setTimeout(scrollToCurrentHash, delay));
     };
     const handleHashChange = () => {
-      [0, 260, 900, 1800].forEach(queueScroll);
+      queueScroll(0);
     };
     const handleLoad = () => queueScroll(140);
 
-    [80, 360, 900, 1800, 3200, 5200].forEach(queueScroll);
+    [80, 700].forEach(queueScroll);
     if (document.readyState === "complete") {
       queueScroll(140);
     } else {
@@ -478,6 +477,31 @@ function useNearViewport<T extends HTMLElement>(rootMargin = "720px 0px") {
   return [elementRef, isNearViewport] as const;
 }
 
+function useViewportPresence<T extends HTMLElement>(rootMargin = "100px 0px") {
+  const elementRef = useRef<T | null>(null);
+  const [isInViewport, setIsInViewport] = useState(false);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setIsInViewport(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => setIsInViewport(entries.some((entry) => entry.isIntersecting)),
+      { rootMargin, threshold: 0.01 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [rootMargin]);
+
+  return [elementRef, isInViewport] as const;
+}
+
 function getProjectVisualKey(title: string, category: string) {
   const source = `${title} ${category}`.toLowerCase();
   if (source.includes("wildfire")) return "wildfire";
@@ -495,29 +519,25 @@ function getProjectVisualKey(title: string, category: string) {
 function ProjectVisual({
   image,
   gallery,
-  videos,
-  videoPoster,
-  youtube,
   title,
   category,
   eager = false,
 }: {
   image?: string;
   gallery?: string[];
-  videos?: string[];
-  videoPoster?: string;
-  youtube?: { id: string; title: string };
   title: string;
   category: string;
   eager?: boolean;
 }) {
   const visualKey = getProjectVisualKey(title, category);
-  const [mediaRef, isNearViewport] = useNearViewport<HTMLDivElement>();
-  const isMobilePreview = useMediaQuery("(max-width: 760px)");
-  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const shouldLoadStaticMedia = eager || (isNearViewport && !isMobilePreview);
-  const shouldLoadMotionMedia = eager || (isNearViewport && !isMobilePreview && !prefersReducedMotion);
   const isAnimatedImage = image?.toLowerCase().includes(".gif") ?? false;
+  const [mediaRef, isInViewport] = useViewportPresence<HTMLDivElement>(
+    isAnimatedImage ? "100px 0px" : "560px 0px",
+  );
+  const prefersReducedMotion =
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const shouldLoadStaticMedia = eager || isInViewport;
+  const shouldLoadImage = shouldLoadStaticMedia && (!isAnimatedImage || !prefersReducedMotion);
 
   const placeholder = (extraClass = "") => (
     <div
@@ -535,72 +555,24 @@ function ProjectVisual({
     </div>
   );
 
-  if (youtube) {
-    if (!shouldLoadStaticMedia) {
-      return placeholder("has-youtube");
+  if (image) {
+    if (!shouldLoadImage) {
+      return placeholder("has-image");
     }
 
     return (
-      <div ref={mediaRef} className="project-visual has-media has-youtube" data-visual={visualKey}>
+      <div ref={mediaRef} className="project-visual has-media" data-visual={visualKey}>
         <img
-          src={`https://img.youtube.com/vi/${youtube.id}/hqdefault.jpg`}
-          alt={`${youtube.title} video preview`}
+          src={image}
+          alt={`${title} preview`}
           loading="lazy"
           decoding="async"
-          referrerPolicy="no-referrer"
+          fetchPriority={eager ? "high" : "low"}
           onError={(event) => {
             event.currentTarget.closest(".project-visual")?.classList.remove("has-media");
             event.currentTarget.remove();
           }}
         />
-        <span className="project-youtube-play" aria-hidden="true">
-          <Youtube size={22} />
-        </span>
-      </div>
-    );
-  }
-
-  if (videos?.length) {
-    if (videoPoster && !eager) {
-      if (!shouldLoadStaticMedia) {
-        return placeholder("has-video");
-      }
-
-      return (
-        <div ref={mediaRef} className="project-visual has-media has-video-poster" data-visual={visualKey}>
-          <img src={videoPoster} alt={`${title} video preview`} loading="lazy" decoding="async" />
-          <span className="project-youtube-play" aria-hidden="true">
-            <Play size={20} fill="currentColor" />
-          </span>
-        </div>
-      );
-    }
-
-    if (!shouldLoadMotionMedia) {
-      return placeholder("has-video");
-    }
-
-    return (
-      <div ref={mediaRef} className="project-visual has-media" data-visual={visualKey}>
-        <div className={`project-video-grid${videos.length > 1 ? " has-pair" : ""}`}>
-          {videos.map((video) => (
-            <video
-              key={video}
-              src={video}
-              poster={videoPoster}
-              aria-label={`${title} preview clip`}
-              autoPlay={!eager}
-              muted
-              loop={!eager}
-              playsInline
-              controls={eager}
-              preload={eager ? "metadata" : "none"}
-              onError={(event) => {
-                event.currentTarget.remove();
-              }}
-            />
-          ))}
-        </div>
       </div>
     );
   }
@@ -610,7 +582,7 @@ function ProjectVisual({
       return placeholder("has-gallery");
     }
 
-    const previewItems = gallery.slice(0, isMobilePreview && !eager ? 2 : 4);
+    const previewItems = gallery.slice(0, 4);
 
     return (
       <div ref={mediaRef} className="project-visual has-media has-gallery" data-visual={visualKey}>
@@ -628,27 +600,6 @@ function ProjectVisual({
             />
           ))}
         </div>
-      </div>
-    );
-  }
-
-  if (image) {
-    if (!shouldLoadStaticMedia || (isAnimatedImage && !eager)) {
-      return placeholder("has-image");
-    }
-
-    return (
-      <div ref={mediaRef} className="project-visual has-media" data-visual={visualKey}>
-        <img
-          src={image}
-          alt={`${title} preview`}
-          loading="lazy"
-          decoding="async"
-          onError={(event) => {
-            event.currentTarget.closest(".project-visual")?.classList.remove("has-media");
-            event.currentTarget.remove();
-          }}
-        />
       </div>
     );
   }
@@ -800,9 +751,6 @@ function ProjectCard({
       <ProjectVisual
         image={project.image}
         gallery={project.gallery}
-        videos={project.videos}
-        videoPoster={project.videoPoster}
-        youtube={project.youtube}
         title={project.title}
         category={project.category}
       />
@@ -982,9 +930,6 @@ function ProjectModal({
           <ProjectVisual
             image={project.image}
             gallery={project.gallery}
-            videos={project.videos}
-            videoPoster={project.videoPoster}
-            youtube={project.youtube}
             title={project.title}
             category={project.category}
             eager
@@ -1001,18 +946,6 @@ function ProjectModal({
           <p className="modal-summary" id="project-modal-summary">
             {project.text}
           </p>
-
-          {project.youtube && (
-            <div className="project-video-embed" aria-label={`${project.title} video demo`}>
-              <iframe
-                title={project.youtube.title}
-                src={`https://www.youtube-nocookie.com/embed/${project.youtube.id}`}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            </div>
-          )}
 
           {project.gallery?.length ? (
             <div className="project-modal-gallery" aria-label={`${project.title} image gallery`}>

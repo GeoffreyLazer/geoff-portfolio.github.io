@@ -2519,6 +2519,7 @@ main {
   position: relative;
   height: clamp(190px, 16vw, 250px);
   overflow: hidden;
+  contain: paint;
   border-bottom: 1px solid rgba(180, 242, 211, 0.16);
   background:
     radial-gradient(circle at 72% 28%, color-mix(in srgb, var(--project-accent), transparent 62%), transparent 12rem),
@@ -2557,19 +2558,7 @@ main {
     linear-gradient(120deg, color-mix(in srgb, var(--project-accent), transparent 78%), transparent 48%);
 }
 
-.project-visual.has-youtube::before {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--project-accent), transparent 76%), transparent 10rem),
-    linear-gradient(180deg, rgba(3, 5, 7, 0.08), rgba(3, 5, 7, 0.72));
-}
-
-.project-visual img,
-.project-visual video {
+.project-visual img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -2580,53 +2569,9 @@ main {
     filter 500ms ease;
 }
 
-.project-youtube-play {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  left: 50%;
-  display: inline-grid;
-  width: 58px;
-  height: 58px;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--project-accent), white 10%);
-  border-radius: 999px;
-  color: #f8fff9;
-  background:
-    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.22), transparent 42%),
-    color-mix(in srgb, var(--project-accent), rgba(5, 12, 20, 0.82) 74%);
-  box-shadow:
-    0 0 38px color-mix(in srgb, var(--project-accent), transparent 58%),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transform: translate(-50%, -50%);
-}
-
-.project-card:hover .project-visual img,
-.project-card:hover .project-visual video {
+.project-card:hover .project-visual img {
   filter: saturate(1.28) contrast(1.1);
   transform: scale(1.07);
-}
-
-.project-video-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: 100%;
-  height: 100%;
-  background: rgba(3, 8, 14, 0.74);
-}
-
-.project-video-grid.has-pair {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2px;
-}
-
-.project-video-grid.has-pair video:first-child {
-  object-position: 42% center;
-}
-
-.project-video-grid.has-pair video:last-child {
-  object-position: 58% center;
 }
 
 .project-gallery-grid {
@@ -2914,30 +2859,6 @@ main {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 18px;
-}
-
-.project-video-embed {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  margin: 18px 0 4px;
-  border: 1px solid color-mix(in srgb, var(--project-accent, var(--electric)), transparent 68%);
-  border-radius: 8px;
-  aspect-ratio: 16 / 9;
-  background:
-    radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--project-accent, var(--electric)), transparent 76%), transparent 12rem),
-    rgba(3, 8, 14, 0.78);
-  box-shadow:
-    0 22px 62px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.project-video-embed iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
 }
 
 .project-card-links {
@@ -4341,12 +4262,6 @@ main {
   height: 100%;
 }
 
-.modal-visual .project-visual video {
-  object-fit: contain;
-  background: #020507;
-  transform: none;
-}
-
 .project-modal-gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4458,11 +4373,9 @@ main {
 .reveal {
   --reveal-y: 34px;
   opacity: 0;
-  filter: blur(12px);
   transform: translate3d(0, var(--reveal-y), 0);
   transition:
     opacity 680ms ease,
-    filter 680ms ease,
     transform 680ms cubic-bezier(0.2, 0.72, 0.16, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
@@ -4470,13 +4383,11 @@ main {
 .reveal.is-visible {
   --reveal-y: 0px;
   opacity: 1;
-  filter: blur(0);
 }
 
 .reveal:target {
   --reveal-y: 0px;
   opacity: 1;
-  filter: blur(0);
 }
 
 [data-tilt] {
@@ -4641,6 +4552,11 @@ main {
 }
 
 @media (max-width: 860px) {
+  .site-shell * {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
   body {
     background-attachment: scroll;
   }
