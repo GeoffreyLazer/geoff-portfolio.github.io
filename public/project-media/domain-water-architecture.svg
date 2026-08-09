@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Domain adaptive water extraction architecture visual">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#071019"/>
+      <stop offset="1" stop-color="#122235"/>
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#19e6ff"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7cff9d"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <text x="76" y="92" fill="#f9fff9" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">Domain Adaptation Architecture</text>
+  <text x="80" y="142" fill="#a8bdbc" font-family="Inter, Arial, sans-serif" font-size="22">LU-Net branches fuse source, target, and inference streams</text>
+  <g fill="#0d1821" stroke="#91fff0" stroke-opacity=".55" stroke-width="2">
+    <rect x="105" y="210" width="145" height="84" rx="12"/>
+    <rect x="105" y="350" width="145" height="84" rx="12"/>
+    <rect x="105" y="490" width="145" height="84" rx="12"/>
+    <rect x="340" y="240" width="180" height="84" rx="12"/>
+    <rect x="340" y="430" width="180" height="84" rx="12"/>
+    <rect x="630" y="332" width="150" height="92" rx="12"/>
+    <rect x="860" y="220" width="130" height="68" rx="12"/>
+    <rect x="860" y="352" width="130" height="68" rx="12"/>
+    <rect x="860" y="484" width="130" height="68" rx="12"/>
+    <rect x="1026" y="298" width="130" height="84" rx="12"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" text-anchor="middle">
+    <text x="177" y="260" fill="#d7fff7">S1 image</text>
+    <text x="177" y="400" fill="#d7fff7">S2 image</text>
+    <text x="177" y="540" fill="#d7fff7">Mask</text>
+    <text x="430" y="291" fill="#f9fff9">LU-Net</text>
+    <text x="430" y="481" fill="#f9fff9">LU-Net</text>
+    <text x="705" y="386" fill="#f9fff9">Concat</text>
+    <text x="925" y="262" fill="#f9fff9">P out</text>
+    <text x="925" y="394" fill="#f9fff9">P fus</text>
+    <text x="925" y="526" fill="#f9fff9">P sar</text>
+    <text x="1091" y="344" fill="#f9fff9">Loss</text>
+  </g>
+  <g fill="none" stroke-width="7" stroke-linecap="round">
+    <path d="M250 252H340" stroke="#19e6ff" marker-end="url(#arrowBlue)"/>
+    <path d="M250 392H340" stroke="#7cff9d" marker-end="url(#arrowGreen)"/>
+    <path d="M520 280C600 280 570 352 630 352" stroke="#19e6ff" marker-end="url(#arrowBlue)"/>
+    <path d="M520 472C604 472 566 404 630 404" stroke="#7cff9d" marker-end="url(#arrowGreen)"/>
+    <path d="M780 352H860" stroke="#19e6ff" marker-end="url(#arrowBlue)"/>
+    <path d="M780 386H860" stroke="#7cff9d" marker-end="url(#arrowGreen)"/>
+    <path d="M990 254C1040 254 1005 318 1026 318" stroke="#19e6ff" marker-end="url(#arrowBlue)"/>
+    <path d="M990 394H1026" stroke="#19e6ff" marker-end="url(#arrowBlue)"/>
+    <path d="M990 526C1050 526 1008 366 1026 366" stroke="#7cff9d" marker-end="url(#arrowGreen)"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">
+    <text x="760" y="628" fill="#19e6ff">labeled source</text>
+    <text x="930" y="628" fill="#7cff9d">unlabeled target</text>
+  </g>
+</svg>

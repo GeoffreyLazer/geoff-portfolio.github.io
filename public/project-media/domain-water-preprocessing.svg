@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Domain adaptive water extraction preprocessing visual">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#071019"/>
+      <stop offset="1" stop-color="#0c2f2d"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" x2="1">
+      <stop offset="0" stop-color="#a7b6bd"/>
+      <stop offset="1" stop-color="#425a63"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <path d="M0 120H1200M0 240H1200M0 360H1200M0 480H1200M0 600H1200M200 0V720M400 0V720M600 0V720M800 0V720M1000 0V720" stroke="#9df7ff" stroke-opacity=".06"/>
+  <text x="76" y="92" fill="#f9fff9" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="800">Dataset Preprocessing</text>
+  <text x="80" y="142" fill="#9fb9b8" font-family="Inter, Arial, sans-serif" font-size="22">256x256 patches from Sentinel-1, Sentinel-2, and mask data</text>
+  <g transform="translate(94 210)">
+    <text x="0" y="-24" fill="#7cff9d" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">S1 SAR patches</text>
+    <text x="0" y="160" fill="#19e6ff" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">S2 optical patches</text>
+    <text x="0" y="344" fill="#ffb86b" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Water masks</text>
+    <g transform="translate(190 0)">
+      <rect width="128" height="128" rx="10" fill="url(#tile)"/>
+      <rect x="152" width="128" height="128" rx="10" fill="#6a777b"/>
+      <rect x="304" width="128" height="128" rx="10" fill="#9aa1a2"/>
+      <rect x="456" width="128" height="128" rx="10" fill="#53666e"/>
+      <rect y="184" width="128" height="128" rx="10" fill="#526c5b"/>
+      <rect x="152" y="184" width="128" height="128" rx="10" fill="#2f7654"/>
+      <rect x="304" y="184" width="128" height="128" rx="10" fill="#5f4c65"/>
+      <rect x="456" y="184" width="128" height="128" rx="10" fill="#4b3127"/>
+      <rect y="368" width="128" height="128" rx="10" fill="#020405"/>
+      <rect x="152" y="368" width="128" height="128" rx="10" fill="#020405"/>
+      <rect x="304" y="368" width="128" height="128" rx="10" fill="#020405"/>
+      <rect x="456" y="368" width="128" height="128" rx="10" fill="#020405"/>
+      <path d="M15 455c24-22 52-16 78-8 18 6 31-8 33 22H15zM498 401c26-4 44 8 68 16v42c-38-5-42-38-82-28z" fill="#fff"/>
+    </g>
+  </g>
+  <circle cx="985" cy="176" r="74" fill="#19e6ff" fill-opacity=".08" stroke="#19e6ff" stroke-opacity=".36" filter="url(#glow)"/>
+  <text x="920" y="182" fill="#d7fff7" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800">PATCH PIPELINE</text>
+</svg>
