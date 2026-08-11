@@ -126,7 +126,7 @@ function ImportedRobot({
       child.material.needsUpdate = true;
       child.castShadow = false;
       child.receiveShadow = false;
-      child.frustumCulled = false;
+      child.frustumCulled = true;
     });
 
     const box = new THREE.Box3().setFromObject(clone);
@@ -421,23 +421,32 @@ function HeroSceneFallback() {
   );
 }
 
-export default function HeroScene() {
+export default function HeroScene({ active = true }: { active?: boolean }) {
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const compact = useMediaQuery("(max-width: 760px)");
   const staticOnly = useMediaQuery("(max-width: 520px)");
+  const [documentVisible, setDocumentVisible] = useState(true);
   const [modelReady, setModelReady] = useState(false);
   const handleModelReady = useCallback(() => setModelReady(true), []);
+  const pauseScene = reducedMotion || !active || !documentVisible;
+
+  useEffect(() => {
+    const updateVisibility = () => setDocumentVisible(document.visibilityState !== "hidden");
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
 
   return (
     <div className={`hero-scene${staticOnly ? " is-static" : ""}${modelReady ? " is-loaded" : ""}`} aria-hidden="true">
       <HeroSceneFallback />
       {!staticOnly && (
         <Canvas
-          dpr={[1, 1.35]}
-          frameloop={reducedMotion ? "demand" : "always"}
+          dpr={[1, 1.2]}
+          frameloop={pauseScene ? "demand" : "always"}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         >
-          <SceneContents compact={compact} reducedMotion={reducedMotion} onModelReady={handleModelReady} />
+          <SceneContents compact={compact} reducedMotion={pauseScene} onModelReady={handleModelReady} />
         </Canvas>
       )}
     </div>

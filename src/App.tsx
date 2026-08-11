@@ -559,6 +559,44 @@ function useMediaQuery(query: string, initialValue = false) {
   return matches;
 }
 
+function useIdleActivation(enabled: boolean) {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if (!enabled || isActive) return;
+
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+
+    if (connection?.saveData || connection?.effectiveType?.includes("2g")) {
+      return;
+    }
+
+    const idleWindow = window as typeof window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    let timer: number | undefined;
+    let idleHandle: number | undefined;
+
+    if (idleWindow.requestIdleCallback) {
+      idleHandle = idleWindow.requestIdleCallback(() => setIsActive(true), { timeout: 900 });
+    } else {
+      timer = window.setTimeout(() => setIsActive(true), 180);
+    }
+
+    return () => {
+      if (idleHandle !== undefined) idleWindow.cancelIdleCallback?.(idleHandle);
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, [enabled, isActive]);
+
+  return isActive;
+}
+
 function useNearViewport<T extends HTMLElement>(rootMargin = "720px 0px") {
   const elementRef = useRef<T | null>(null);
   const [isNearViewport, setIsNearViewport] = useState(false);
@@ -1374,6 +1412,8 @@ function App() {
   useInitialHashScroll();
   const activeSection = useActiveSection();
   const useStaticHeroScene = useMediaQuery("(max-width: 860px)", true);
+  const [heroVisualRef, isHeroVisible] = useViewportPresence<HTMLDivElement>("180px 0px");
+  const canLoadHeroScene = useIdleActivation(!useStaticHeroScene && isHeroVisible);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const modeContent = portfolioModeContent[portfolioMode];
   const selectedProject =
@@ -1500,16 +1540,16 @@ function App() {
             </div>
           </div>
 
-          <div className="hero-visual" aria-hidden="true">
+          <div ref={heroVisualRef} className="hero-visual" aria-hidden="true">
             <div className="hero-hologram">
               <div className="hero-holo-grid" />
               <div className="hero-glow" />
               <div className="hero-connector" />
-              {useStaticHeroScene ? (
+              {useStaticHeroScene || !canLoadHeroScene ? (
                 <HeroSceneStaticFallback />
               ) : (
                 <Suspense fallback={<div className="hero-scene-placeholder" aria-hidden="true" />}>
-                  <HeroScene />
+                  <HeroScene active={isHeroVisible} />
                 </Suspense>
               )}
               <div className="hero-scanline" />

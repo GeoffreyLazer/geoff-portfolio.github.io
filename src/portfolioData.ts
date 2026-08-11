@@ -402,6 +402,32 @@ export const projects: Project[] = [
     },
   },
   {
+    title: "Agentic Data Assistant for Business Operations",
+    date: "Recent",
+    category: "Agentic AI + Data Systems",
+    text: "A production-style assistant that answers business questions across uploaded documents and PostgreSQL operational data.",
+    bullets: [
+      "Routed RAG-only, SQL-only, hybrid, unsafe, and unsupported questions through an explicit LangGraph workflow.",
+      "Returned structured answers with confidence, source attribution, tool calls, latency, conversation IDs, and trace IDs.",
+      "Added safe read-only SQL, MLflow evaluation, dbt models/tests, Dockerized services, pytest, and CI checks.",
+    ],
+    tags: ["FastAPI", "LangGraph", "RAG", "PostgreSQL", "Redis", "Pydantic", "MLflow", "dbt", "Docker"],
+    tracks: ["ai-ml"],
+    featuredPriority: { all: 3, "ai-ml": 1 },
+    details: {
+      problem:
+        "Business questions often span unstructured documents and operational database records, but answers still need to be safe, attributable, and traceable.",
+      built:
+        "A production-style backend that ingests PDF, TXT, CSV, and JSON files, chunks and indexes documents for retrieval, and combines that context with read-only PostgreSQL analytics.",
+      approach:
+        "Used FastAPI, LangGraph, Pydantic, PostgreSQL, and Redis to route RAG, SQL, hybrid, unsafe, and unsupported requests. SQL tooling enforces SELECT-only access, table allowlists, row limits, rollback, and error handling. MLflow evaluation, dbt models/tests, Docker Compose, pytest, GitHub Actions, and observability tables cover quality and operations.",
+      role:
+        "Designed and implemented the agent workflow, ingestion and retrieval pipeline, SQL safety layer, structured API contracts, tracing, evaluation cases, analytics models, and local deployment stack.",
+      impact:
+        "Produced a reproducible, testable assistant that returns natural-language and structured results with source attribution, confidence, tool metadata, latency, and end-to-end traceability across document and SQL workflows.",
+    },
+  },
+  {
     title: "Volume Rendering & 3D Slicing for Medical Imaging",
     date: "Jan 2025 - Apr 2025",
     category: "Medical XR",
@@ -414,7 +440,7 @@ export const projects: Project[] = [
     ],
     tags: ["Unity", "C#", "XR", "DICOM", "Volumetric Rendering"],
     tracks: ["xr"],
-    featuredPriority: { all: 6, xr: 3 },
+    featuredPriority: { xr: 3 },
     details: {
       problem:
         "Medical volume datasets are difficult to inspect in ordinary flat viewers, especially when someone needs to understand internal structures spatially.",
@@ -453,7 +479,7 @@ export const projects: Project[] = [
     ],
     tags: ["Unity", "C#", "Meta Quest", "QGIS", "GeoJSON"],
     tracks: ["xr"],
-    featuredPriority: { all: 7, xr: 4 },
+    featuredPriority: { xr: 4 },
     details: {
       problem:
         "Agricultural terrain, land-plot boundaries, and geospatial routes can be hard to understand when they remain locked in flat GIS views.",
@@ -492,7 +518,7 @@ export const projects: Project[] = [
     ],
     tags: ["PyTorch", "CycleGAN", "Computer Vision", "GAN", "Image Translation"],
     tracks: ["ai-ml"],
-    featuredPriority: { all: 4, "ai-ml": 2 },
+    featuredPriority: { all: 5, "ai-ml": 3 },
     details: {
       problem:
         "Vision systems often struggle when the same scene appears under different lighting domains, and paired day/night training data is hard to collect.",
@@ -528,7 +554,7 @@ export const projects: Project[] = [
     ],
     tags: ["PyTorch", "U-Net", "pix2pix", "GAN", "Computer Vision", "Remote Sensing"],
     tracks: ["ai-ml"],
-    featuredPriority: { all: 8, "ai-ml": 1 },
+    featuredPriority: { "ai-ml": 2 },
     details: {
       problem:
         "Remote-sensing models can lose reliability when moving between satellite sensors with different imaging characteristics.",
@@ -556,7 +582,7 @@ export const projects: Project[] = [
     ],
     tags: ["Unity", "C#", "NPC AI", "API Integration", "3D Interaction"],
     tracks: ["ai-ml"],
-    featuredPriority: { all: 3, "ai-ml": 3 },
+    featuredPriority: { all: 4, "ai-ml": 4 },
     details: {
       problem:
         "Mental-health education and self-reflection tools can feel passive, especially for users who respond better to interactive scenarios.",
@@ -634,7 +660,7 @@ export const projects: Project[] = [
     ],
     tags: ["Unity", "C#", "VR", "YOLO", "Computer Vision"],
     tracks: ["ai-ml", "xr"],
-    featuredPriority: { all: 5, "ai-ml": 5, xr: 5 },
+    featuredPriority: { all: 6, "ai-ml": 6, xr: 5 },
     details: {
       problem:
         "Athletes need training feedback that is immediate and spatial, especially when correcting form during repeated exercises.",
@@ -692,7 +718,7 @@ export const projects: Project[] = [
     ],
     tags: ["Python", "TensorFlow/Keras", "CNN", "VGG16", "Image Classification"],
     tracks: ["ai-ml"],
-    featuredPriority: { all: 9, "ai-ml": 4 },
+    featuredPriority: { "ai-ml": 5 },
     links: [
       {
         label: "YouTube",
@@ -768,6 +794,8 @@ export const skillCategories: SkillCategory[] = [
       { name: "TensorFlow/Keras", logo: `${deviconBase}/tensorflow/tensorflow-original.svg` },
       { name: "LSTM", mark: "LSTM" },
       { name: "RAG", mark: "RAG" },
+      { name: "LangGraph", mark: "LG" },
+      { name: "MLflow", mark: "MLF" },
       { name: "LoRA", mark: "LoRA" },
       { name: "U-Net", mark: "U" },
       { name: "CV", logo: `${simpleIconBase}/opencv.svg` },
@@ -820,6 +848,8 @@ export const skillCategories: SkillCategory[] = [
       { name: "GitHub Actions", logo: `${deviconBase}/githubactions/githubactions-original.svg` },
       { name: "Linux", logo: `${deviconBase}/linux/linux-original.svg` },
       { name: "SQL", mark: "SQL" },
+      { name: "Redis", logo: `${deviconBase}/redis/redis-original.svg` },
+      { name: "dbt", mark: "dbt" },
       { name: "Parquet", mark: "PQ" },
       { name: "CSV Pipelines", mark: "CSV" },
       { name: "Cloud Deployment", logo: `${simpleIconBase}/googlecloud.svg` },
