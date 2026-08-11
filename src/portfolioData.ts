@@ -1,6 +1,9 @@
 const deviconBase = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
 const simpleIconBase = "https://cdn.jsdelivr.net/npm/simple-icons@v13/icons";
 
+export type PortfolioTrack = "ai-ml" | "xr";
+export type PortfolioMode = "all" | PortfolioTrack;
+
 export type ProjectLink = {
   label: string;
   href: string;
@@ -22,6 +25,8 @@ export type Project = {
   text: string;
   bullets: string[];
   tags: string[];
+  tracks: PortfolioTrack[];
+  featuredPriority?: Partial<Record<PortfolioMode, number>>;
   details?: ProjectDetails;
   image?: string;
   gallery?: string[];
@@ -47,6 +52,8 @@ export type SelectedExperience = WorkExperience & {
   signal: string;
   visualLabel: string;
   sourceUrl?: string;
+  tracks: PortfolioTrack[];
+  trackPriority?: Partial<Record<PortfolioTrack, number>>;
 };
 
 export type SkillItem = {
@@ -114,6 +121,8 @@ export const selectedExperience: SelectedExperience[] = [
     signal: "XR R&D",
     visualLabel: "Civil engineering XR research",
     sourceNote: "Confirm the official role title and start month before final resume use.",
+    tracks: ["xr"],
+    trackPriority: { xr: 1 },
   },
   {
     title: "Machine Learning Engineer",
@@ -134,6 +143,8 @@ export const selectedExperience: SelectedExperience[] = [
     signal: "Applied ML",
     visualLabel: "Wildfire ML + R&D",
     sourceUrl: "https://firesafe.live/about/",
+    tracks: ["ai-ml"],
+    trackPriority: { "ai-ml": 1 },
   },
   {
     title: "Software Developer Intern",
@@ -155,6 +166,8 @@ export const selectedExperience: SelectedExperience[] = [
     signal: "XR Software",
     visualLabel: "Healthcare XR systems",
     sourceUrl: "https://luxsonic.ca/about-us/",
+    tracks: ["xr"],
+    trackPriority: { xr: 2 },
   },
   {
     title: "Graduate Teaching Assistant",
@@ -175,6 +188,7 @@ export const selectedExperience: SelectedExperience[] = [
     signal: "Software Quality",
     visualLabel: "Research university teaching",
     sourceUrl: "https://www.ualberta.ca/en/toolkit/index.html",
+    tracks: [],
   },
   {
     title: "AI/ML Researcher",
@@ -196,6 +210,8 @@ export const selectedExperience: SelectedExperience[] = [
     signal: "Medical AI",
     visualLabel: "Biosensing + AI",
     sourceUrl: "https://medwatchtech.com/",
+    tracks: ["ai-ml"],
+    trackPriority: { "ai-ml": 2 },
   },
   {
     title: "Web Development Intern",
@@ -216,6 +232,7 @@ export const selectedExperience: SelectedExperience[] = [
     signal: "Geo-AI Web",
     visualLabel: "Geospatial software",
     sourceUrl: "https://spacescan.in/",
+    tracks: [],
   },
 ];
 
@@ -342,6 +359,8 @@ export const projects: Project[] = [
       "Passed 81 device checks near 72 FPS; final rule-based geometry and optimization-service integration remains pending.",
     ],
     tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "Mixed Reality", "Motion Data", "JSON/NPZ", "Spatial UI"],
+    tracks: ["xr"],
+    featuredPriority: { all: 1, xr: 1 },
     details: {
       problem:
         "Video, spreadsheets, and desktop tools make it difficult to compare three-dimensional movement, body-region risk, and corrective guidance in one coherent view.",
@@ -367,6 +386,8 @@ export const projects: Project[] = [
       "Launch-tested the Quest 3 release near 72 FPS; the research team's final RL model still needs integration.",
     ],
     tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "VIVE Focus Vision", "Spatial Audio", "CSV Analytics", "RL Integration"],
+    tracks: ["xr"],
+    featuredPriority: { all: 2, xr: 2 },
     details: {
       problem:
         "The simulation needed to feel like a credible construction site while keeping warning sound as the only initial hazard cue, controlling experimental conditions, and separating participant behavior from technical failure.",
@@ -392,6 +413,8 @@ export const projects: Project[] = [
       "Mapped and visualized 3D datasets to support diagnostic and procedural understanding.",
     ],
     tags: ["Unity", "C#", "XR", "DICOM", "Volumetric Rendering"],
+    tracks: ["xr"],
+    featuredPriority: { all: 6, xr: 3 },
     details: {
       problem:
         "Medical volume datasets are difficult to inspect in ordinary flat viewers, especially when someone needs to understand internal structures spatially.",
@@ -429,6 +452,8 @@ export const projects: Project[] = [
       "Displayed geospatial information and implemented automatic pathfinding between land plots.",
     ],
     tags: ["Unity", "C#", "Meta Quest", "QGIS", "GeoJSON"],
+    tracks: ["xr"],
+    featuredPriority: { all: 7, xr: 4 },
     details: {
       problem:
         "Agricultural terrain, land-plot boundaries, and geospatial routes can be hard to understand when they remain locked in flat GIS views.",
@@ -466,6 +491,8 @@ export const projects: Project[] = [
       "Explored generative computer vision workflows for urban street scenes.",
     ],
     tags: ["PyTorch", "CycleGAN", "Computer Vision", "GAN", "Image Translation"],
+    tracks: ["ai-ml"],
+    featuredPriority: { all: 4, "ai-ml": 2 },
     details: {
       problem:
         "Vision systems often struggle when the same scene appears under different lighting domains, and paired day/night training data is hard to collect.",
@@ -500,6 +527,8 @@ export const projects: Project[] = [
       "Evaluated generated water masks against ground-truth patches for extraction quality.",
     ],
     tags: ["PyTorch", "U-Net", "pix2pix", "GAN", "Computer Vision", "Remote Sensing"],
+    tracks: ["ai-ml"],
+    featuredPriority: { all: 8, "ai-ml": 1 },
     details: {
       problem:
         "Remote-sensing models can lose reliability when moving between satellite sensors with different imaging characteristics.",
@@ -526,6 +555,8 @@ export const projects: Project[] = [
       "Integrated Convai API characters for interactive dialogue and prompt-engineered each NPC by role.",
     ],
     tags: ["Unity", "C#", "NPC AI", "API Integration", "3D Interaction"],
+    tracks: ["ai-ml"],
+    featuredPriority: { all: 3, "ai-ml": 3 },
     details: {
       problem:
         "Mental-health education and self-reflection tools can feel passive, especially for users who respond better to interactive scenarios.",
@@ -564,6 +595,7 @@ export const projects: Project[] = [
       "Integrated Cohere AI and Whisper API for emotion classification and audio-to-text in Unity.",
     ],
     tags: ["Unity", "C#", "Cohere AI", "Whisper API", "NLP"],
+    tracks: ["ai-ml"],
     details: {
       problem:
         "Mental-health storytelling needs accessible interaction patterns that can adapt to user input without becoming clinically overreaching.",
@@ -601,6 +633,8 @@ export const projects: Project[] = [
       "Developed a CV-based YOLO model to correct exercise form with alerts and a progress bar.",
     ],
     tags: ["Unity", "C#", "VR", "YOLO", "Computer Vision"],
+    tracks: ["ai-ml", "xr"],
+    featuredPriority: { all: 5, "ai-ml": 5, xr: 5 },
     details: {
       problem:
         "Athletes need training feedback that is immediate and spatial, especially when correcting form during repeated exercises.",
@@ -631,6 +665,7 @@ export const projects: Project[] = [
       "Combined object detection with pulse infrared detection for above-ground and underground monitoring.",
     ],
     tags: ["YOLO", "Computer Vision", "Object Detection", "Python", "Embedded AI"],
+    tracks: ["ai-ml"],
     details: {
       problem:
         "Border and perimeter surveillance concepts need a way to detect visible objects while also reasoning about movement that may not be directly visible.",
@@ -656,6 +691,8 @@ export const projects: Project[] = [
       "Built a demo-backed deep learning workflow for waste classification.",
     ],
     tags: ["Python", "TensorFlow/Keras", "CNN", "VGG16", "Image Classification"],
+    tracks: ["ai-ml"],
+    featuredPriority: { all: 9, "ai-ml": 4 },
     links: [
       {
         label: "YouTube",
@@ -675,6 +712,7 @@ export const projects: Project[] = [
       "Connected detection behavior with browser automation logic.",
     ],
     tags: ["JavaScript", "Browser Extension", "PyTorch", "YOLO", "Computer Vision"],
+    tracks: ["ai-ml"],
     links: [
       {
         label: "GitHub",
@@ -694,6 +732,7 @@ export const projects: Project[] = [
       "Focused on practical healthcare support through mobile app workflows.",
     ],
     tags: ["Android", "Healthcare", "Patient Monitoring", "Mobile App"],
+    tracks: [],
   },
 ];
 

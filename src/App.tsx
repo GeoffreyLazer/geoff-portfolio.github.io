@@ -33,6 +33,7 @@ import {
   projects,
   selectedExperience,
   skillCategories,
+  type PortfolioMode,
   type ProjectLink,
 } from "./portfolioData";
 
@@ -45,28 +46,7 @@ const linkIconMap: Record<ProjectLink["kind"], LucideIcon> = {
   youtube: Youtube,
 };
 
-const focusTags = [
-  "AI/ML",
-  "XR",
-  "Full-Stack",
-  "R&D prototypes",
-  "Computer vision",
-  "Data systems",
-  "3D interfaces",
-  "DevOps",
-];
-
 const heroHeadline = "Geoffrey Lazer";
-const heroSubheadline =
-  "Building intelligent + interactive software systems.";
-const heroTags = [
-  "AI/ML Engineer",
-  "XR Developer",
-  "Full-Stack Developer",
-  "Research Prototyper",
-  "Applied ML",
-  "Interactive Systems",
-];
 const educationFocusChips = [
   "Multimedia Systems",
   "AI/ML",
@@ -74,20 +54,6 @@ const educationFocusChips = [
   "XR",
   "3D Visualization",
   "R&D Prototypes",
-];
-const heroSignals = [
-  { value: "MSc", label: "Computing Science" },
-  { value: "R&D", label: "Prototype to product" },
-  { value: "SWE", label: "Production systems" },
-];
-const heroProjectSignals = ["Applied ML", "XR Interfaces", "Full-Stack"];
-const heroSystemLabels = [
-  { code: "AI/ML", label: "Core" },
-  { code: "XR", label: "Interface" },
-  { code: "FS", label: "Full-Stack Layer" },
-  { code: "3D", label: "Pipeline" },
-  { code: "R&D", label: "Systems" },
-  { code: "AI", label: "Applied Intelligence" },
 ];
 const projectAccentPalette = [
   "#19e6ff",
@@ -97,20 +63,167 @@ const projectAccentPalette = [
   "#8a7cff",
   "#f6ff7a",
 ];
-const featuredProjectTitles = [
-  "NFRF Mixed-Reality Ergonomics Platform",
-  "Formwork Safety VR",
-  "Volume Rendering & 3D Slicing for Medical Imaging",
-  "Agricultural Terrain Visualization",
-  "Domain Adaptive Learning for Water Body Extraction",
-  "Intelligent Garbage Classification using Deep Learning",
+const portfolioModeOptions: Array<{ id: PortfolioMode; label: string; shortLabel: string }> = [
+  { id: "all", label: "Full Portfolio", shortLabel: "Full" },
+  { id: "ai-ml", label: "AI/ML", shortLabel: "AI/ML" },
+  { id: "xr", label: "XR + Spatial", shortLabel: "XR" },
 ];
 
-const moreProjectPriorityTitles = [
-  "Helex VR",
-  "Shinyonaika 2D - Graphic Novel",
-  "MediAssist",
-];
+const portfolioModeContent: Record<
+  PortfolioMode,
+  {
+    documentTitle: string;
+    status: string;
+    eyebrow: string;
+    summary: string;
+    heroSignals: string[];
+    heroTags: string[];
+    systemLabels: Array<{ code: string; label: string }>;
+    signalCards: Array<{ value: string; label: string }>;
+    manifesto: string;
+    experienceEyebrow: string;
+    experienceTitle: string;
+    experienceIntro: string;
+    projectsEyebrow: string;
+    projectsTitle: string;
+    projectsIntro: string;
+    focusTags: string[];
+    moreProjectsTitle: string;
+    skillsTitle: string;
+    skillsCore: string;
+    skillsSubline: string;
+  }
+> = {
+  all: {
+    documentTitle: "Geoffrey Lazer | AI/ML, XR + Full-Stack",
+    status: "Available for AI/ML + XR roles",
+    eyebrow: "AI/ML x XR x Full-Stack",
+    summary: "Building intelligent + interactive software systems.",
+    heroSignals: ["Applied ML", "XR Interfaces", "Full-Stack"],
+    heroTags: [
+      "AI/ML Engineer",
+      "XR Developer",
+      "Full-Stack Developer",
+      "Research Prototyper",
+      "Applied ML",
+      "Interactive Systems",
+    ],
+    systemLabels: [
+      { code: "AI/ML", label: "Core" },
+      { code: "XR", label: "Interface" },
+      { code: "FS", label: "Full-Stack Layer" },
+      { code: "3D", label: "Pipeline" },
+      { code: "R&D", label: "Systems" },
+      { code: "AI", label: "Applied Intelligence" },
+    ],
+    signalCards: [
+      { value: "MSc", label: "Computing Science" },
+      { value: "R&D", label: "Prototype to product" },
+      { value: "SWE", label: "Production systems" },
+    ],
+    manifesto:
+      "Start with recent roles, then open the projects that show the same AI/ML, XR, and full-stack skills in motion.",
+    experienceEyebrow: "Selected Experience",
+    experienceTitle: "Experience across AI/ML, XR + production software.",
+    experienceIntro:
+      "A focused timeline spanning applied ML, XR software, SWE mentorship, and data-driven web systems.",
+    projectsEyebrow: "Featured Projects",
+    projectsTitle: "Selected systems + prototypes.",
+    projectsIntro:
+      "Work across AI/ML, XR, 3D visualization, data pipelines, and full-stack research tooling.",
+    focusTags: ["AI/ML", "XR", "Full-Stack", "R&D prototypes", "Computer vision", "Data systems", "3D interfaces", "DevOps"],
+    moreProjectsTitle: "Additional prototypes + experiments.",
+    skillsTitle: "AI/ML x XR x Full-Stack toolkit.",
+    skillsCore: "Models x interfaces x production systems",
+    skillsSubline: "Research signals → usable software",
+  },
+  "ai-ml": {
+    documentTitle: "Geoffrey Lazer | AI/ML Engineer",
+    status: "Available for AI/ML roles",
+    eyebrow: "AI/ML Engineering x Applied R&D",
+    summary: "Building applied models, data pipelines + intelligent software systems.",
+    heroSignals: ["Applied ML", "Computer Vision", "Data Systems"],
+    heroTags: ["AI/ML Engineer", "Applied ML", "Computer Vision", "Model Evaluation", "Data Pipelines", "Research Prototyper"],
+    systemLabels: [
+      { code: "ML", label: "Model Core" },
+      { code: "CV", label: "Vision Pipeline" },
+      { code: "DATA", label: "Training Layer" },
+      { code: "EVAL", label: "Validation" },
+      { code: "R&D", label: "Experiments" },
+      { code: "API", label: "Delivery" },
+    ],
+    signalCards: [
+      { value: "ML", label: "Applied modeling" },
+      { value: "CV", label: "Vision systems" },
+      { value: "SWE", label: "Production delivery" },
+    ],
+    manifesto:
+      "Start with applied ML roles, then inspect the model, vision, and data projects behind the work.",
+    experienceEyebrow: "AI/ML Experience",
+    experienceTitle: "Applied ML across research + decision-support systems.",
+    experienceIntro:
+      "Focused experience in time-series modeling, sensor data, preprocessing, evaluation, and research translation.",
+    projectsEyebrow: "Featured AI/ML Projects",
+    projectsTitle: "Models, vision systems + learning pipelines.",
+    projectsIntro:
+      "Selected work across domain adaptation, generative vision, deep learning, NLP, and computer-vision prototypes.",
+    focusTags: ["Python", "PyTorch", "TensorFlow", "LSTM", "Computer Vision", "GANs", "Model Evaluation", "Data Pipelines"],
+    moreProjectsTitle: "Additional AI/ML experiments.",
+    skillsTitle: "AI/ML engineering toolkit.",
+    skillsCore: "Models x data x production delivery",
+    skillsSubline: "Research signals → evaluated systems",
+  },
+  xr: {
+    documentTitle: "Geoffrey Lazer | XR Developer",
+    status: "Available for XR roles",
+    eyebrow: "XR x Spatial Computing x 3D",
+    summary: "Building immersive research tools + interactive 3D systems.",
+    heroSignals: ["Unity XR", "Spatial Interfaces", "3D Pipelines"],
+    heroTags: ["XR Developer", "Unity + C#", "OpenXR", "Meta Quest 3", "Spatial UI", "Research Prototyper"],
+    systemLabels: [
+      { code: "OXR", label: "Runtime" },
+      { code: "XR", label: "Interface" },
+      { code: "3D", label: "Pipeline" },
+      { code: "UI", label: "Spatial Layer" },
+      { code: "R&D", label: "Experiment" },
+      { code: "Q3", label: "Deployment" },
+    ],
+    signalCards: [
+      { value: "XR", label: "Spatial interaction" },
+      { value: "3D", label: "Visualization systems" },
+      { value: "R&D", label: "Research platforms" },
+    ],
+    manifesto:
+      "Start with XR research roles, then inspect the spatial interfaces, visualization systems, and headset deployments.",
+    experienceEyebrow: "XR Experience",
+    experienceTitle: "XR research + real-time visualization systems.",
+    experienceIntro:
+      "Focused experience in Unity, OpenXR, Quest deployment, immersive interaction, and medical or civil-engineering visualization.",
+    projectsEyebrow: "Featured XR Projects",
+    projectsTitle: "Immersive interfaces + spatial research tools.",
+    projectsIntro:
+      "Selected work across construction safety, ergonomics, medical imaging, geospatial visualization, and VR training.",
+    focusTags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "Spatial UI", "Mixed Reality", "3D Visualization", "Real-Time Rendering"],
+    moreProjectsTitle: "Additional XR + interactive 3D work.",
+    skillsTitle: "XR + spatial systems toolkit.",
+    skillsCore: "Interaction x rendering x headset delivery",
+    skillsSubline: "Research protocols → immersive software",
+  },
+};
+
+function getPortfolioModeFromPath(): PortfolioMode {
+  if (typeof window === "undefined") return "all";
+  const pathSegments = window.location.pathname.split("/").filter(Boolean);
+  const pathMode = pathSegments.at(-1);
+  return pathMode === "ai-ml" || pathMode === "xr" ? pathMode : "all";
+}
+
+function getPortfolioModeHref(mode: PortfolioMode) {
+  const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return mode === "all" ? base : `${base}${mode}/`;
+}
 
 const navItems = [
   { label: "Home", href: "#home", id: "home" },
@@ -192,7 +305,7 @@ function revealAnchoredSection(target: HTMLElement) {
   });
 }
 
-function useCyberInteractions() {
+function useCyberInteractions(dependency: string) {
   useEffect(() => {
     const root = document.documentElement;
     const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -332,7 +445,7 @@ function useCyberInteractions() {
       window.removeEventListener("scroll", requestScrollProgress);
       window.removeEventListener("resize", requestScrollProgress);
     };
-  }, []);
+  }, [dependency]);
 }
 
 function useInitialHashScroll() {
@@ -659,7 +772,47 @@ function HeroSceneStaticFallback() {
   );
 }
 
-function Header({ activeSection }: { activeSection: string }) {
+function PortfolioModeSwitcher({
+  mode,
+  onSelect,
+  compact = false,
+}: {
+  mode: PortfolioMode;
+  onSelect: (event: MouseEvent<HTMLAnchorElement>, mode: PortfolioMode) => void;
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={`portfolio-mode-switcher${compact ? " is-compact" : ""}`}
+      role="group"
+      aria-label="Choose portfolio focus"
+    >
+      {portfolioModeOptions.map((option) => (
+        <a
+          className={mode === option.id ? "is-active" : undefined}
+          href={`${getPortfolioModeHref(option.id)}#home`}
+          aria-current={mode === option.id ? "page" : undefined}
+          onClick={(event) => onSelect(event, option.id)}
+          key={option.id}
+        >
+          <span className="mode-switcher-dot" aria-hidden="true" />
+          <span className="mode-label-long">{option.label}</span>
+          <span className="mode-label-short">{option.shortLabel}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function Header({
+  activeSection,
+  portfolioMode,
+  onModeSelect,
+}: {
+  activeSection: string;
+  portfolioMode: PortfolioMode;
+  onModeSelect: (event: MouseEvent<HTMLAnchorElement>, mode: PortfolioMode) => void;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -700,24 +853,34 @@ function Header({ activeSection }: { activeSection: string }) {
         {menuOpen ? <X aria-hidden="true" size={19} /> : <Menu aria-hidden="true" size={19} />}
       </button>
 
-      <nav
-        className="nav-links"
-        id="primary-navigation"
-        aria-label="Primary navigation"
-        data-open={menuOpen ? "true" : "false"}
-      >
-        {navItems.map((item) => (
-          <a
-            className={activeSection === item.id ? "is-active" : undefined}
-            href={item.href}
-            key={item.id}
-            aria-current={activeSection === item.id ? "page" : undefined}
-            onClick={(event) => handleHashScrollClick(event, item.href, closeMenu)}
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
+      <div className="header-navigation" data-open={menuOpen ? "true" : "false"}>
+        <PortfolioModeSwitcher
+          mode={portfolioMode}
+          compact
+          onSelect={(event, mode) => {
+            closeMenu();
+            onModeSelect(event, mode);
+          }}
+        />
+        <nav
+          className="nav-links"
+          id="primary-navigation"
+          aria-label="Primary navigation"
+          data-open={menuOpen ? "true" : "false"}
+        >
+          {navItems.map((item) => (
+            <a
+              className={activeSection === item.id ? "is-active" : undefined}
+              href={item.href}
+              key={item.id}
+              aria-current={activeSection === item.id ? "page" : undefined}
+              onClick={(event) => handleHashScrollClick(event, item.href, closeMenu)}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
     </header>
   );
 }
@@ -1116,22 +1279,38 @@ function EducationSection() {
   );
 }
 
-function TechnicalStackSection() {
+function TechnicalStackSection({
+  portfolioMode,
+  modeContent,
+}: {
+  portfolioMode: PortfolioMode;
+  modeContent: (typeof portfolioModeContent)[PortfolioMode];
+}) {
+  const categoryOrder: Record<PortfolioMode, string[]> = {
+    all: ["AI/ML", "XR + 3D", "Full-Stack", "Data + DevOps"],
+    "ai-ml": ["AI/ML", "Data + DevOps", "Full-Stack"],
+    xr: ["XR + 3D", "Full-Stack", "Data + DevOps"],
+  };
+  const visibleSkillCategories = categoryOrder[portfolioMode].flatMap((title) => {
+    const category = skillCategories.find((item) => item.title === title);
+    return category ? [category] : [];
+  });
+
   return (
     <section className="page-section technical-stack-page reveal" id="skills" aria-labelledby="skills-title">
       <div className="section-heading wide">
         <p className="eyebrow">Technical Stack</p>
-        <h2 id="skills-title">AI/ML x XR x Full-Stack toolkit.</h2>
+        <h2 id="skills-title">{modeContent.skillsTitle}</h2>
       </div>
 
       <div className="stack-orbit-panel">
         <div className="stack-core" aria-label="Core technical identity">
-          <span>Models x interfaces x production systems</span>
-          <p>Research signals → usable software</p>
+          <span>{modeContent.skillsCore}</span>
+          <p>{modeContent.skillsSubline}</p>
         </div>
 
         <div className="stack-category-grid">
-          {skillCategories.map((category) => (
+          {visibleSkillCategories.map((category) => (
             <article
               className="stack-category-card reveal"
               key={category.title}
@@ -1168,60 +1347,101 @@ function TechnicalStackSection() {
           ))}
         </div>
 
-        <div className="learning-panel reveal" aria-labelledby="learning-title">
-          <div className="learning-heading">
-            <p className="eyebrow">Certifications</p>
-            <h3 id="learning-title">Certifications + Learning</h3>
+        {portfolioMode !== "xr" && (
+          <div className="learning-panel reveal" aria-labelledby="learning-title">
+            <div className="learning-heading">
+              <p className="eyebrow">Certifications</p>
+              <h3 id="learning-title">Certifications + Learning</h3>
+            </div>
+            <div className="learning-chip-grid">
+              {certifications.map((certification) => (
+                <article className="learning-chip" key={certification} data-tilt>
+                  <BadgeCheck aria-hidden="true" size={17} />
+                  <span>{certification}</span>
+                </article>
+              ))}
+            </div>
           </div>
-          <div className="learning-chip-grid">
-            {certifications.map((certification) => (
-              <article className="learning-chip" key={certification} data-tilt>
-                <BadgeCheck aria-hidden="true" size={17} />
-                <span>{certification}</span>
-              </article>
-            ))}
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );
 }
 
 function App() {
-  useCyberInteractions();
+  const [portfolioMode, setPortfolioMode] = useState<PortfolioMode>(getPortfolioModeFromPath);
+  useCyberInteractions(portfolioMode);
   useInitialHashScroll();
   const activeSection = useActiveSection();
   const useStaticHeroScene = useMediaQuery("(max-width: 860px)", true);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
+  const modeContent = portfolioModeContent[portfolioMode];
   const selectedProject =
     selectedProjectIndex === null ? null : projects[selectedProjectIndex];
-  const visibleProjectEntries = projects.map((project, projectIndex) => ({ project, projectIndex }));
-  const featuredProjects = featuredProjectTitles.flatMap((title) => {
-    const entry = visibleProjectEntries.find(({ project }) => project.title === title);
-    return entry ? [entry] : [];
-  });
-  const featuredTitleSet = new Set(featuredProjectTitles);
-  const morePrioritySet = new Set(moreProjectPriorityTitles);
-  const moreProjects = [
-    ...moreProjectPriorityTitles.flatMap((title) => {
-      const entry = visibleProjectEntries.find(({ project }) => project.title === title);
-      return !entry || featuredTitleSet.has(title) ? [] : [entry];
-    }),
-    ...visibleProjectEntries.flatMap(({ project, projectIndex }) =>
-      featuredTitleSet.has(project.title) || morePrioritySet.has(project.title) ? [] : [{ project, projectIndex }],
-    ),
-  ];
+  const visibleExperience = [...selectedExperience]
+    .filter((role) => portfolioMode === "all" || role.tracks.includes(portfolioMode))
+    .sort((left, right) => {
+      if (portfolioMode === "all") return 0;
+      return (left.trackPriority?.[portfolioMode] ?? 99) - (right.trackPriority?.[portfolioMode] ?? 99);
+    });
+  const visibleProjectEntries = projects
+    .map((project, projectIndex) => ({ project, projectIndex }))
+    .filter(({ project }) => portfolioMode === "all" || project.tracks.includes(portfolioMode));
+  const featuredProjects = visibleProjectEntries
+    .filter(({ project }) => project.featuredPriority?.[portfolioMode] !== undefined)
+    .sort(
+      (left, right) =>
+        (left.project.featuredPriority?.[portfolioMode] ?? 99) -
+        (right.project.featuredPriority?.[portfolioMode] ?? 99),
+    );
+  const featuredTitleSet = new Set(featuredProjects.map(({ project }) => project.title));
+  const moreProjects = visibleProjectEntries.filter(({ project }) => !featuredTitleSet.has(project.title));
   const shellStyle = {
     "--hero-image": `url(${cyberpunkHero})`,
   } as CSSProperties & Record<string, string>;
   const currentYear = new Date().getFullYear();
 
+  useEffect(() => {
+    const syncModeFromHistory = () => setPortfolioMode(getPortfolioModeFromPath());
+    window.addEventListener("popstate", syncModeFromHistory);
+    return () => window.removeEventListener("popstate", syncModeFromHistory);
+  }, []);
+
+  useEffect(() => {
+    document.title = modeContent.documentTitle;
+  }, [modeContent.documentTitle]);
+
+  const handlePortfolioModeSelect = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, nextMode: PortfolioMode) => {
+      if (event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+
+      event.preventDefault();
+      setSelectedProjectIndex(null);
+      window.history.pushState(null, "", `${getPortfolioModeHref(nextMode)}#home`);
+      setPortfolioMode(nextMode);
+
+      window.requestAnimationFrame(() => {
+        const home = document.getElementById("home");
+        if (!home) return;
+        revealAnchoredSection(home);
+        scrollToNavTarget(home, window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      });
+    },
+    [],
+  );
+
   return (
-    <div className="site-shell" style={shellStyle}>
+    <div className="site-shell" style={shellStyle} data-portfolio-mode={portfolioMode}>
       <div className="photo-backdrop" aria-hidden="true" />
       <div className="cursor-aura" aria-hidden="true" />
       <div className="scroll-progress" aria-hidden="true" />
-      <Header activeSection={activeSection} />
+      <Header
+        activeSection={activeSection}
+        portfolioMode={portfolioMode}
+        onModeSelect={handlePortfolioModeSelect}
+      />
 
       <main>
         <section className="hero-section page-stage reveal is-visible" id="home" aria-labelledby="hero-title">
@@ -1234,21 +1454,25 @@ function App() {
             <div className="hero-status-row hero-entrance" aria-label="Availability and location">
               <span className="hero-status">
                 <span aria-hidden="true" />
-                Available for AI/ML + XR roles
+                {modeContent.status}
               </span>
               <span className="hero-coordinate">53.5461°N / R&amp;D LAB</span>
             </div>
             <div className="hero-label-row hero-entrance">
-              <p className="hero-eyebrow">AI/ML x XR x Full-Stack</p>
+              <p className="hero-eyebrow">{modeContent.eyebrow}</p>
+            </div>
+            <div className="hero-mode-picker hero-entrance">
+              <span>Portfolio focus</span>
+              <PortfolioModeSwitcher mode={portfolioMode} onSelect={handlePortfolioModeSelect} />
             </div>
             <h1 className="hero-title hero-entrance" id="hero-title" data-text={heroHeadline}>
               <span>Geoffrey</span>
               {" "}
               <span><em>Lazer</em></span>
             </h1>
-            <p className="hero-summary hero-entrance">{heroSubheadline}</p>
+            <p className="hero-summary hero-entrance">{modeContent.summary}</p>
             <div className="hero-project-signals hero-entrance" aria-label="Project signals">
-              {heroProjectSignals.map((signal) => (
+              {modeContent.heroSignals.map((signal) => (
                 <span key={signal}>{signal}</span>
               ))}
             </div>
@@ -1289,13 +1513,13 @@ function App() {
                 </Suspense>
               )}
               <div className="hero-scanline" />
-              {heroSystemLabels.map((label, index) => (
+              {modeContent.systemLabels.map((label, index) => (
                 <div className={`hero-system-label hero-system-label-${index + 1}`} key={`${label.code}-${label.label}`}>
                   <span>{label.code}</span>
                   <strong>{label.label}</strong>
                 </div>
               ))}
-              {heroSignals.map((signal, index) => (
+              {modeContent.signalCards.map((signal, index) => (
                 <div className={`hero-signal-card hero-signal-card-${index + 1}`} key={signal.label}>
                   <strong>{signal.value}</strong>
                   <span>{signal.label}</span>
@@ -1305,7 +1529,7 @@ function App() {
           </div>
 
           <ul className="hero-tags" aria-label="Core focus areas">
-            {heroTags.map((tag, index) => (
+            {modeContent.heroTags.map((tag, index) => (
               <li
                 className="hero-tag"
                 key={tag}
@@ -1330,7 +1554,7 @@ function App() {
         <section className="manifesto-band reveal" aria-labelledby="manifesto-title">
           <p className="eyebrow">Quick Read</p>
           <h2 id="manifesto-title">
-            Start with recent roles, then open the projects that show the same AI/ML, XR, and full-stack skills in motion.
+            {modeContent.manifesto}
           </h2>
           <a className="manifesto-link" href="#experience" onClick={(event) => handleHashScrollClick(event, "#experience")} data-tilt>
             Start with experience
@@ -1340,15 +1564,15 @@ function App() {
 
         <section className="page-section resume-page experience-page reveal" id="experience" aria-labelledby="experience-title">
           <div className="section-heading wide experience-heading">
-            <p className="eyebrow">Selected Experience</p>
-            <h2 id="experience-title">Experience across AI/ML, XR + production software.</h2>
+            <p className="eyebrow">{modeContent.experienceEyebrow}</p>
+            <h2 id="experience-title">{modeContent.experienceTitle}</h2>
             <p className="section-intro">
-              A focused timeline spanning applied ML, XR software, SWE mentorship, and data-driven web systems.
+              {modeContent.experienceIntro}
             </p>
           </div>
 
           <div className="experience-grid selected-experience-grid">
-            {selectedExperience.map((role, index) => (
+            {visibleExperience.map((role, index) => (
               <SelectedExperienceCard role={role} index={index} key={`${role.company}-${role.title}`} />
             ))}
           </div>
@@ -1356,15 +1580,15 @@ function App() {
 
         <section className="page-section projects-page reveal" id="projects" aria-labelledby="projects-title">
           <div className="section-heading wide">
-            <p className="eyebrow">Featured Projects</p>
-            <h2 id="projects-title">Selected systems + prototypes.</h2>
+            <p className="eyebrow">{modeContent.projectsEyebrow}</p>
+            <h2 id="projects-title">{modeContent.projectsTitle}</h2>
             <p className="section-intro">
-              Work across AI/ML, XR, 3D visualization, data pipelines, and full-stack research tooling.
+              {modeContent.projectsIntro}
             </p>
           </div>
           <div className="focus-marquee" aria-hidden="true">
             <div>
-              {focusTags.concat(focusTags).map((tag, index) => (
+              {modeContent.focusTags.concat(modeContent.focusTags).map((tag, index) => (
                 <span key={`${tag}-${index}`}>{tag}</span>
               ))}
             </div>
@@ -1380,31 +1604,33 @@ function App() {
             ))}
           </div>
 
-          <div className="more-projects-panel reveal" aria-labelledby="more-projects-title">
-            <div className="more-projects-heading">
-              <div>
-                <p className="eyebrow">More Projects</p>
-                <h3 id="more-projects-title">Additional prototypes + experiments.</h3>
+          {moreProjects.length > 0 && (
+            <div className="more-projects-panel reveal" aria-labelledby="more-projects-title">
+              <div className="more-projects-heading">
+                <div>
+                  <p className="eyebrow">More Projects</p>
+                  <h3 id="more-projects-title">{modeContent.moreProjectsTitle}</h3>
+                </div>
+                <span>{moreProjects.length} more</span>
               </div>
-              <span>{moreProjects.length} more</span>
+              <div className="more-project-grid">
+                {moreProjects.map(({ project, projectIndex }, index) => (
+                  <ProjectCard
+                    project={project}
+                    index={featuredProjects.length + index}
+                    key={project.title}
+                    compact
+                    onOpen={() => setSelectedProjectIndex(projectIndex)}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="more-project-grid">
-              {moreProjects.map(({ project, projectIndex }, index) => (
-                <ProjectCard
-                  project={project}
-                  index={featuredProjects.length + index}
-                  key={project.title}
-                  compact
-                  onOpen={() => setSelectedProjectIndex(projectIndex)}
-                />
-              ))}
-            </div>
-          </div>
+          )}
         </section>
 
         <EducationSection />
 
-        <TechnicalStackSection />
+        <TechnicalStackSection portfolioMode={portfolioMode} modeContent={modeContent} />
 
         <section className="page-section about-page reveal" id="about" aria-labelledby="about-title">
           <div className="page-kicker">Welcome To My World</div>
