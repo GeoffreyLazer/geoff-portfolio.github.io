@@ -4693,6 +4693,17 @@ main {
     animation: none !important;
   }
 
+  .projects-page,
+  .projects-page .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .project-card {
+    content-visibility: visible;
+  }
+
   body {
     background-attachment: scroll;
   }

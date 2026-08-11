@@ -682,12 +682,12 @@ function ProjectVisual({
 }) {
   const visualKey = getProjectVisualKey(title, category);
   const isAnimatedImage = image?.toLowerCase().includes(".gif") ?? false;
-  const [mediaRef, isInViewport] = useViewportPresence<HTMLDivElement>(
-    isAnimatedImage ? "100px 0px" : "560px 0px",
+  const [mediaRef, isNearViewport] = useNearViewport<HTMLDivElement>(
+    isAnimatedImage ? "360px 0px" : "640px 0px",
   );
   const prefersReducedMotion =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const shouldLoadStaticMedia = eager || isInViewport;
+  const shouldLoadStaticMedia = eager || isNearViewport;
   const shouldLoadImage = shouldLoadStaticMedia && (!isAnimatedImage || !prefersReducedMotion);
 
   const placeholder = (extraClass = "") => (
@@ -716,7 +716,7 @@ function ProjectVisual({
         <img
           src={image}
           alt={`${title} preview`}
-          loading="lazy"
+          loading={isAnimatedImage ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={eager ? "high" : "low"}
           onError={(event) => {
