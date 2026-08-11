@@ -4683,6 +4683,16 @@ main {
     backdrop-filter: none !important;
   }
 
+  .focus-marquee div,
+  .stack-chip,
+  .hero-scanline,
+  .hero-status > span,
+  .scroll-cue span,
+  .education-node-field span,
+  .contact-page::before {
+    animation: none !important;
+  }
+
   body {
     background-attachment: scroll;
   }
