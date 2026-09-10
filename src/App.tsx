@@ -26,6 +26,7 @@ import {
   type MouseEvent,
 } from "react";
 import cyberpunkHero from "./assets/cyberpunk-xr-lab.webp";
+import optimizedProjectMedia from "./optimizedProjectMedia.json";
 import {
   certifications,
   education,
@@ -685,10 +686,10 @@ function ProjectVisual({
   const [mediaRef, isNearViewport] = useNearViewport<HTMLDivElement>(
     isAnimatedImage ? "360px 0px" : "640px 0px",
   );
-  const prefersReducedMotion =
-    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const shouldLoadStaticMedia = eager || isNearViewport;
-  const shouldLoadImage = shouldLoadStaticMedia && (!isAnimatedImage || !prefersReducedMotion);
+  const optimizedMedia = image
+    ? (optimizedProjectMedia as Record<string, { animated?: string; still: string }>)[image]
+    : undefined;
 
   const placeholder = (extraClass = "") => (
     <div
@@ -707,23 +708,29 @@ function ProjectVisual({
   );
 
   if (image) {
-    if (!shouldLoadImage) {
+    if (!shouldLoadStaticMedia) {
       return placeholder("has-image");
     }
 
     return (
       <div ref={mediaRef} className="project-visual has-media" data-visual={visualKey}>
-        <img
-          src={image}
-          alt={`${title} preview`}
-          loading={isAnimatedImage ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={eager ? "high" : "low"}
-          onError={(event) => {
-            event.currentTarget.closest(".project-visual")?.classList.remove("has-media");
-            event.currentTarget.remove();
-          }}
-        />
+        <picture>
+          {optimizedMedia && (
+            <source media="(prefers-reduced-motion: reduce)" srcSet={optimizedMedia.still} type="image/webp" />
+          )}
+          {optimizedMedia?.animated && <source srcSet={optimizedMedia.animated} type="image/webp" />}
+          <img
+            src={image}
+            alt={`${title} preview`}
+            loading={eager || isAnimatedImage ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={eager ? "high" : "low"}
+            onError={(event) => {
+              event.currentTarget.closest(".project-visual")?.classList.remove("has-media");
+              event.currentTarget.remove();
+            }}
+          />
+        </picture>
       </div>
     );
   }
@@ -852,6 +859,12 @@ function Header({
   onModeSelect: (event: MouseEvent<HTMLAnchorElement>, mode: PortfolioMode) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const compactNavigation = useMediaQuery("(max-width: 960px)", true);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [compactNavigation]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -859,6 +872,7 @@ function Header({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
+        menuButtonRef.current?.focus({ preventScroll: true });
       }
     };
 
@@ -881,9 +895,10 @@ function Header({
       </a>
 
       <button
+        ref={menuButtonRef}
         className="mobile-menu-toggle"
         type="button"
-        aria-controls="primary-navigation"
+        aria-controls="header-navigation"
         aria-expanded={menuOpen}
         aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
         onClick={() => setMenuOpen((current) => !current)}
@@ -891,7 +906,12 @@ function Header({
         {menuOpen ? <X aria-hidden="true" size={19} /> : <Menu aria-hidden="true" size={19} />}
       </button>
 
-      <div className="header-navigation" data-open={menuOpen ? "true" : "false"}>
+      <div
+        id="header-navigation"
+        className="header-navigation"
+        data-open={menuOpen ? "true" : "false"}
+        inert={compactNavigation && !menuOpen}
+      >
         <PortfolioModeSwitcher
           mode={portfolioMode}
           compact
@@ -1127,71 +1147,73 @@ function ProjectModal({
           <X aria-hidden="true" size={20} />
         </button>
 
-        <div className="modal-visual">
-          <ProjectVisual
-            image={project.image}
-            gallery={project.gallery}
-            title={project.title}
-            category={project.category}
-            eager
-          />
-          <div className="modal-number">{String(index + 1).padStart(2, "0")}</div>
-        </div>
-
-        <div className="modal-content">
-          <div className="project-meta">
-            <p className="project-category">{project.category}</p>
-            <span>{project.date}</span>
+        <div className="project-modal-scroll">
+          <div className="modal-visual">
+            <ProjectVisual
+              image={project.image}
+              gallery={project.gallery}
+              title={project.title}
+              category={project.category}
+              eager
+            />
+            <div className="modal-number">{String(index + 1).padStart(2, "0")}</div>
           </div>
-          <h2 id="project-modal-title">{project.title}</h2>
-          <p className="modal-summary" id="project-modal-summary">
-            {project.text}
-          </p>
 
-          {project.gallery?.length ? (
-            <div className="project-modal-gallery" aria-label={`${project.title} image gallery`}>
-              {project.gallery.map((item, itemIndex) => (
-                <img
-                  key={item}
-                  src={item}
-                  alt={`${project.title} gallery visual ${itemIndex + 1}`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              ))}
+          <div className="modal-content">
+            <div className="project-meta">
+              <p className="project-category">{project.category}</p>
+              <span>{project.date}</span>
             </div>
-          ) : null}
+            <h2 id="project-modal-title">{project.title}</h2>
+            <p className="modal-summary" id="project-modal-summary">
+              {project.text}
+            </p>
 
-          <div className="project-detail-grid" aria-label={`${project.title} case study details`}>
-            {detailItems.map((item) => (
-              <article className="project-detail-block" key={item.label}>
-                <h3>{item.label}</h3>
-                <p>{item.text}</p>
-              </article>
-            ))}
-            <article className="project-detail-block stack-block">
-              <h3>Tech stack</h3>
-              <div className="tag-list modal-tags" aria-label={`${project.title} tags`}>
-                {project.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
+            {project.gallery?.length ? (
+              <div className="project-modal-gallery" aria-label={`${project.title} image gallery`}>
+                {project.gallery.map((item, itemIndex) => (
+                  <img
+                    key={item}
+                    src={item}
+                    alt={`${project.title} gallery visual ${itemIndex + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ))}
               </div>
-            </article>
-          </div>
-          {project.links && (
-            <div className="project-links modal-links" aria-label={`${project.title} links`}>
-              {project.links.map((link) => {
-                const Icon = linkIconMap[link.kind];
-                return (
-                  <a className="link-pill" href={link.href} key={link.href} target="_blank" rel="noreferrer">
-                    <Icon aria-hidden="true" size={16} />
-                    {link.label}
-                    <ArrowUpRight aria-hidden="true" size={14} />
-                  </a>
-                );
-              })}
+            ) : null}
+
+            <div className="project-detail-grid" aria-label={`${project.title} case study details`}>
+              {detailItems.map((item) => (
+                <article className="project-detail-block" key={item.label}>
+                  <h3>{item.label}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+              <article className="project-detail-block stack-block">
+                <h3>Tech stack</h3>
+                <div className="tag-list modal-tags" aria-label={`${project.title} tags`}>
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </article>
             </div>
-          )}
+            {project.links && (
+              <div className="project-links modal-links" aria-label={`${project.title} links`}>
+                {project.links.map((link) => {
+                  const Icon = linkIconMap[link.kind];
+                  return (
+                    <a className="link-pill" href={link.href} key={link.href} target="_blank" rel="noreferrer">
+                      <Icon aria-hidden="true" size={16} />
+                      {link.label}
+                      <ArrowUpRight aria-hidden="true" size={14} />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>
@@ -1505,10 +1527,14 @@ function App() {
               <span>Portfolio focus</span>
               <PortfolioModeSwitcher mode={portfolioMode} onSelect={handlePortfolioModeSelect} />
             </div>
-            <h1 className="hero-title hero-entrance" id="hero-title" data-text={heroHeadline}>
+            <h1 className="hero-title hero-entrance" id="hero-title" aria-label={heroHeadline}>
               <span>Geoffrey</span>
               {" "}
               <span><em>Lazer</em></span>
+              <span className="hero-title-glitch" aria-hidden="true">
+                <span>Geoffrey</span>
+                <span>Lazer</span>
+              </span>
             </h1>
             <p className="hero-summary hero-entrance">{modeContent.summary}</p>
             <div className="hero-project-signals hero-entrance" aria-label="Project signals">
