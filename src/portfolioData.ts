@@ -18,6 +18,13 @@ export type ProjectDetails = {
   impact: string;
 };
 
+export type ProjectCaseStudy = {
+  situation: string;
+  task: string;
+  action: string;
+  result: string;
+};
+
 export type Project = {
   title: string;
   date: string;
@@ -28,6 +35,7 @@ export type Project = {
   tracks: PortfolioTrack[];
   featuredPriority?: Partial<Record<PortfolioMode, number>>;
   details?: ProjectDetails;
+  caseStudy?: ProjectCaseStudy;
   image?: string;
   gallery?: string[];
   links?: ProjectLink[];
@@ -107,13 +115,13 @@ export const selectedExperience: SelectedExperience[] = [
     company: "University of Alberta",
     location: "Edmonton, AB",
     date: "2026 – Present",
-    text: "Developing immersive civil-engineering research platforms for construction safety and ergonomics.",
+    text: "Developed and deployed Meta Quest 3 research prototypes for ergonomic coaching and construction-safety experiments.",
     bullets: [
-      "Designed and developed a controlled OpenXR formwork-safety experiment with audio-only truck/load hazards, timed interactions, and CSV trial analytics.",
-      "Built a passthrough MR ergonomics workspace with synchronized video, joint/mesh motion visualization, risk scoring, and original-versus-optimized comparison.",
-      "Validated both Quest 3 applications near 72 FPS and created modular integration boundaries for researcher-provided RL and rule-based models.",
+      "Built mixed reality coaching with three synchronized body views, risk scores, spoken guidance, 50 recording slots, and authenticated RunPod package imports.",
+      "Integrated MaxJS and LinRL warning policies into six five-minute construction-safety sessions, with balanced soundtracks and CSV exports for a planned 30-participant study.",
+      "Validated ergonomic coaching with 15 automated checks and 72.1 average FPS in a representative headset test; delivered signed construction-safety builds and data-preserving updates.",
     ],
-    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "Mixed Reality", "XR Interaction", "CSV Analytics"],
+    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "RunPod", "REST APIs", "CSV Analytics"],
     logo: "/education-logos/ualberta.svg",
     logoAlt: "University of Alberta logo",
     initials: "UA",
@@ -242,13 +250,13 @@ export const workExperience: WorkExperience[] = [
     company: "University of Alberta",
     location: "Edmonton, AB",
     date: "2026 – Present",
-    text: "Developing immersive civil-engineering research platforms for construction safety and ergonomics.",
+    text: "Developed and deployed Meta Quest 3 research prototypes for ergonomic coaching and construction-safety experiments.",
     bullets: [
-      "Designed and developed an OpenXR formwork-safety experiment with audio-first hazards, timed interactions, and CSV trial analytics.",
-      "Built a passthrough MR ergonomics workspace with synchronized video, joint/mesh visualization, risk scoring, and movement comparison.",
-      "Validated both Quest 3 applications near 72 FPS and prepared modular boundaries for researcher-provided models.",
+      "Built mixed reality coaching with three synchronized body views, risk scores, spoken guidance, 50 recording slots, and authenticated RunPod package imports.",
+      "Integrated MaxJS and LinRL warning policies into six five-minute construction-safety sessions, with balanced soundtracks and CSV exports for a planned 30-participant study.",
+      "Validated ergonomic coaching with 15 automated checks and 72.1 average FPS in a representative headset test; delivered signed construction-safety builds and data-preserving updates.",
     ],
-    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "Mixed Reality", "XR Interaction", "CSV Analytics"],
+    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "RunPod", "REST APIs", "CSV Analytics"],
     sourceNote: "Confirm the official role title and start month before final resume use.",
   },
   {
@@ -348,57 +356,53 @@ export const workExperience: WorkExperience[] = [
 
 export const projects: Project[] = [
   {
-    title: "NFRF Mixed-Reality Ergonomics Platform",
+    title: "NFRF Ergonomic Coaching Platform",
     date: "2026 – Present",
-    category: "Mixed-Reality Ergonomics",
+    category: "Mixed Reality · Research Prototype",
     image: "/project-media/nfrf-ergonomics-preview.gif",
-    text: "A Meta Quest 3 research platform for reviewing motion, visualizing ergonomic risk, and presenting corrective guidance in mixed reality.",
+    text: "A Meta Quest 3 research prototype that brings motion analysis, personalized movement comparison, and spoken coaching into one mixed reality workspace.",
     bullets: [
-      "Synchronized source video, joints, full-body mesh, regional risk scores, and timeline controls through one playback state.",
-      "Built a passthrough spatial workspace with controller input, hand interaction, comparison modes, and headset-readable UI.",
-      "Passed 81 device checks near 72 FPS; final rule-based geometry and optimization-service integration remains pending.",
+      "Synchronized Original, Current Attempt, and Personalized Perfect body views with joint/mesh rendering, region highlighting, risk scores, and playback controls.",
+      "Added 50 recording slots and authenticated RunPod package imports without rebuilding the APK; slot capacity does not imply 50 processed recordings.",
+      "Passed 15 automated checks and averaged 72.1 FPS in a representative Quest 3 validation.",
     ],
-    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "Mixed Reality", "Motion Data", "JSON/NPZ", "Spatial UI"],
+    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "Python", "NumPy", "RunPod", "REST APIs", "Android Text-to-Speech", "React", "TypeScript", "Three.js"],
     tracks: ["xr"],
     featuredPriority: { all: 1, xr: 1 },
-    details: {
-      problem:
-        "Video, spreadsheets, and desktop tools make it difficult to compare three-dimensional movement, body-region risk, and corrective guidance in one coherent view.",
-      built:
-        "A passthrough mixed-reality workspace that synchronizes source video, skeletal joints, full-body mesh rendering, ergonomic scores, body-region highlighting, and original-versus-optimized motion review.",
-      approach:
-        "Used a single authoritative playback state across video, frame timing, joints, mesh vertices/faces, motion mode, active region, and risk data. Adapter-based integration preserved the existing loaders and XR runtime while adding spatial UI, voice instruction support, and an interface for future rule-based outputs.",
-      role:
-        "Designed and developed the Unity XR platform, spatial interface, interaction system, synchronized timeline, body visualization modes, Quest deployment workflow, and research integration boundary.",
-      impact:
-        "Delivered an operational Quest 3 research prototype with 81 passing device checks, performance near 72 FPS, and no runtime exceptions during structured validation. The final geometry adapter and optimization web service remain to be integrated when the research schema is finalized.",
+    caseStudy: {
+      situation:
+        "A research team needed a way to review how a person performed a movement, compare it with a personalized reference, and present coaching guidance in a headset. The motion analysis existed as separate video, 3D, risk, and instruction files.",
+      task:
+        "Build a usable mixed reality platform that brought those files together and let researchers select the right participant, recording, body region, and coaching attempt.",
+      action:
+        "I built a Unity and OpenXR Quest 3 application with passthrough, three synchronized body views (Original, Current Attempt, and Personalized Perfect), joint and mesh rendering, region highlighting, risk scores, timeline controls, and spoken instructions. I added a spatial session manager for 50 recording slots and integrated an authenticated RunPod API so the headset can request processing, download, and import prepared coaching packages. I also addressed controller input, readability, interrupted downloads, and playback of shorter attempts. The supporting workflow uses Python and NumPy, with Android text-to-speech for guidance; React, TypeScript, and Three.js powered the earlier browser prototype.",
+      result:
+        "Delivered a working Quest 3 research prototype that can load distinct coaching sessions without rebuilding the APK. A representative device validation passed 15 automated checks and averaged 72.1 FPS. The interface supports 50 recording slots; this does not mean all 50 recordings have been processed.",
     },
   },
   {
-    title: "Formwork Safety VR",
+    title: "Construction Safety VR Experiment",
     date: "2026 – Present",
-    category: "Construction Safety XR",
+    category: "Construction Safety · Research Prototype",
     image: "/project-media/formwork-safety-vr-preview.gif",
-    text: "A controlled VR experiment for studying how construction workers recognize and respond to acoustic hazard warnings during formwork tasks.",
+    text: "A Meta Quest 3 research prototype for comparing MaxJS and LinRL audio warnings during formwork tasks and equipment avoidance in a noisy construction site.",
     bullets: [
-      "Built timed two-station trigger/grip formwork interactions and audio-only truck and descending-load hazards.",
-      "Implemented six-session trial logic, signed response timing, fail-closed validation, and detailed CSV decision exports.",
-      "Launch-tested the Quest 3 release near 72 FPS; the research team's final RL model still needs integration.",
+      "Built six five-minute sessions with 15 warning and five pass-by trials each: 120 trials per participant.",
+      "Integrated MaxJS and LinRL, balanced 12 soundtracks across three noise levels, and added reproducible scheduling for a planned 30-participant study.",
+      "Delivered signed Quest builds, CSV exports, and maintenance guides; a validated update retained all 138 existing headset research files.",
     ],
-    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "VIVE Focus Vision", "Spatial Audio", "CSV Analytics", "RL Integration"],
+    tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "MaxJS", "LinRL", "Spatial Audio", "CSV Analytics", "Android"],
     tracks: ["xr"],
     featuredPriority: { all: 2, xr: 2 },
-    details: {
-      problem:
-        "The simulation needed to feel like a credible construction site while keeping warning sound as the only initial hazard cue, controlling experimental conditions, and separating participant behavior from technical failure.",
-      built:
-        "A six-session VR experiment in which participants complete sequential connector and nut actions on pre-installed formwork panels while responding to an approaching truck or descending load through sound-only warnings.",
-      approach:
-        "Implemented timed trigger and grip mechanics, controlled trial and hazard state, spatial ambience, signed response classification, collision and avoidance outcomes, configurable sessions, and Excel-compatible CSV exports. A ScriptableObject integration layer accepts researcher-provided model decisions and stops visibly when model output is missing or invalid.",
-      role:
-        "Worked across Unity/C# development, XR interaction, experiment logic, environment and hazard design, spatial UI, audio integration, optimization, CSV validation, Quest/VIVE deployment, documentation, and research handover.",
-      impact:
-        "Produced a modular Quest 3 research release that passed 184 automated audio-first scenarios and launched near 72 FPS with both Touch Plus controllers detected. Formal participant collection remains pending until the final researcher-provided RL model is integrated.",
+    caseStudy: {
+      situation:
+        "A construction-safety research team wanted to compare two audio-warning strategies while participants worked on formwork panels and avoided approaching equipment in a noisy VR site. The study required precise timing, balanced sound conditions, repeatable participant assignments, and reliable behavioral data.",
+      task:
+        "My role was to implement and hand over the Quest 3 application, connecting the experimental protocol, warning models, VR interactions, and data collection into one system suitable for pilot testing and the planned 30-participant study.",
+      action:
+        "I built the environment in Unity and C# using OpenXR; integrated MaxJS and LinRL (linear reinforcement learning) warning selection; implemented six five-minute sessions with 15 warning and five pass-by trials each; and balanced 12 soundtracks across low, medium, and high complexity conditions. I developed the panel task, equipment hazards, spatial menus, pause and resume behavior, reproducible participant scheduling, learner checkpoints, and CSV logging. As pilots revealed usability and state-management issues, I refined panel progress preservation, collision handling, controller targeting, and session transitions. I also created automated validation, signed Android builds, Quest installation procedures, and researcher-facing maintenance guides.",
+      result:
+        "The team received an installed Quest 3 application with a reproducible study schedule, research data exports, and a documented workflow for modifying, building, and deploying future versions. The final installed build passed automated project, runtime, model, and package checks; its data-preserving update retained all 138 existing headset research files. Participant-facing behavior still calls for a final worn-headset acceptance check before formal collection. Pilot evidence did not establish that LinRL improved reaction times.",
     },
   },
   {

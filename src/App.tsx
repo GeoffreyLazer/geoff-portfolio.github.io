@@ -1093,7 +1093,12 @@ function ProjectModal({
     };
   }, [requestClose]);
 
-  const detailItems = [
+  const detailItems = project.caseStudy ? [
+    { label: "Situation", text: project.caseStudy.situation },
+    { label: "Task", text: project.caseStudy.task },
+    { label: "Action", text: project.caseStudy.action },
+    { label: "Result", text: project.caseStudy.result },
+  ] : [
     {
       label: "Problem",
       text: project.details?.problem ?? project.text,
