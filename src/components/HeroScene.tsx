@@ -3,8 +3,11 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+import { publicAsset } from "../publicAsset";
 
-const ROBOT_MODEL_PATH = "/models/robot-full-optimized.glb";
+const ROBOT_MODEL_PATH = publicAsset("/models/robot-full-meshopt.glb");
+const configureModelLoader = (loader: GLTFLoader) => loader.setMeshoptDecoder(MeshoptDecoder);
 
 type PointerRef = MutableRefObject<{ x: number; y: number }>;
 
@@ -53,7 +56,7 @@ function ImportedRobot({
   onReady: () => void;
 }) {
   const group = useRef<THREE.Group>(null);
-  const gltf = useLoader(GLTFLoader, ROBOT_MODEL_PATH);
+  const gltf = useLoader(GLTFLoader, ROBOT_MODEL_PATH, configureModelLoader);
 
   const robot = useMemo(() => {
     const clone = gltf.scene.clone(true);
@@ -442,6 +445,7 @@ export default function HeroScene({ active = true }: { active?: boolean }) {
       <HeroSceneFallback />
       {!staticOnly && (
         <Canvas
+          fallback={null}
           dpr={[1, 1.2]}
           frameloop={pauseScene ? "demand" : "always"}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}

@@ -1,6 +1,39 @@
 {
+  "/project-media/day-night-preview.gif": {
+    "animated": "/project-media/day-night-preview.webp"
+  },
+  "/project-media/defense-rover-preview.gif": {
+    "animated": "/project-media/defense-rover-preview.webp"
+  },
+  "/project-media/domain-water-preview.gif": {
+    "animated": "/project-media/domain-water-preview.webp"
+  },
+  "/project-media/formwork-safety-vr-preview.gif": {
+    "animated": "/project-media/formwork-safety-vr-preview.webp"
+  },
+  "/project-media/garbage-classification-preview.gif": {
+    "animated": "/project-media/garbage-classification-preview.webp"
+  },
+  "/project-media/helex-preview.gif": {
+    "animated": "/project-media/helex-preview.webp"
+  },
+  "/project-media/mediassist-preview.gif": {
+    "animated": "/project-media/mediassist-preview.webp"
+  },
+  "/project-media/nfrf-ergonomics-preview.gif": {
+    "animated": "/project-media/nfrf-ergonomics-preview.webp"
+  },
+  "/project-media/shinyonaika-2d-preview.gif": {
+    "animated": "/project-media/shinyonaika-2d-preview.webp"
+  },
+  "/project-media/shinyonaika-3d-preview.gif": {
+    "animated": "/project-media/shinyonaika-3d-preview.webp"
+  },
+  "/project-media/volume-rendering-preview.gif": {
+    "animated": "/project-media/volume-rendering-preview.webp"
+  },
   "/project-media/agricultural-terrain-preview.gif": {
-    "animated": "/project-media/agricultural-terrain-preview.lossless.webp",
+    "animated": "/project-media/agricultural-terrain-preview.lossless-v2.webp",
     "still": "/project-media/agricultural-terrain-preview.still.webp"
   }
 }

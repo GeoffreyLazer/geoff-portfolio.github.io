@@ -1,0 +1,6 @@
+These logo files preserve the portfolio's existing third-party artwork.
+
+Devicon assets: https://github.com/devicons/devicon (MIT).
+Simple Icons assets: https://github.com/simple-icons/simple-icons (CC0-1.0).
+Individual logos are trademarks of their respective owners.
+Copies were retrieved from the previously referenced CDN paths on October 4, 2026.

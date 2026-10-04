@@ -95,12 +95,9 @@ body {
     radial-gradient(circle at 18% 12%, rgba(25, 230, 255, 0.072), transparent 38rem),
     radial-gradient(circle at 84% 18%, rgba(255, 184, 107, 0.052), transparent 34rem),
     radial-gradient(circle at 58% 96%, rgba(124, 255, 157, 0.04), transparent 40rem),
-    linear-gradient(90deg, rgba(124, 255, 157, 0.01) 1px, transparent 1px),
-    linear-gradient(rgba(25, 230, 255, 0.01) 1px, transparent 1px),
     linear-gradient(145deg, #030507 0%, #080b10 46%, #05080b 100%);
   background-attachment: fixed;
-  background-size: 100% 100%, 100% 100%, 100% 100%, 112px 112px, 112px 112px, 100% 100%;
-  animation: ambient-shift 18s ease-in-out infinite alternate;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
 }
 
 body::selection {
@@ -361,6 +358,29 @@ h3 {
   filter: none;
   opacity: 0.72;
   transform: none;
+}
+
+/* The existing moving grid occupies two viewport-sized compositor layers. */
+.ambient-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -7;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient-grid > span {
+  position: absolute;
+  inset: -112px;
+  background-size: 112px 112px;
+  animation: ambient-grid-x 18s ease-in-out infinite alternate;
+  background-image: linear-gradient(90deg, rgba(124, 255, 157, 0.01) 1px, transparent 1px);
+}
+
+.ambient-grid > span + span {
+  background-image: linear-gradient(rgba(25, 230, 255, 0.01) 1px, transparent 1px);
+  transform: translate3d(0, var(--grid-scroll, 0px), 0);
+  animation-name: ambient-grid-y;
 }
 
 .photo-backdrop::after {
@@ -5657,26 +5677,14 @@ main {
   }
 }
 
-@keyframes ambient-shift {
-  0% {
-    background-position:
-      0% 0%,
-      100% 0%,
-      50% 100%,
-      0 0,
-      0 0,
-      0 0;
-  }
+@keyframes ambient-grid-x {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(12px, 0, 0); }
+}
 
-  100% {
-    background-position:
-      8% 4%,
-      92% 6%,
-      48% 92%,
-      12px 18px,
-      -16px 8px,
-      0 0;
-  }
+@keyframes ambient-grid-y {
+  from { transform: translate3d(0, var(--grid-scroll, 0px), 0); }
+  to { transform: translate3d(0, calc(var(--grid-scroll, 0px) + 8px), 0); }
 }
 
 @keyframes title-glitch {

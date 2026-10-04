@@ -1,5 +1,5 @@
-const deviconBase = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
-const simpleIconBase = "https://cdn.jsdelivr.net/npm/simple-icons@v13/icons";
+const deviconBase = "/skill-logos/devicons";
+const simpleIconBase = "/skill-logos/simple-icons";
 
 export type PortfolioTrack = "ai-ml" | "xr";
 export type PortfolioMode = "all" | PortfolioTrack;
@@ -93,7 +93,7 @@ export const profile = {
   role: "AI/ML Engineer | XR Developer | Full-Stack Developer",
   location: "Edmonton, Alberta, Canada",
   email: "allenlazer9@gmail.com",
-  portrait: "/geoffrey-lazer-profile.webp",
+  portrait: "/geoffrey-lazer-graduation-2026.jpg",
   linkedin: "https://www.linkedin.com/in/geoffrey-lazer-09b0901b2/",
   github: "https://github.com/GeoffreyLazer",
   portfolio: "https://geoff-portfolio-github-io.vercel.app/",
@@ -144,7 +144,7 @@ export const selectedExperience: SelectedExperience[] = [
       "Collaborating with applied researchers to translate model outputs into decision-support tools.",
     ],
     tags: ["Python", "LSTM", "Time Series", "Data Pipelines", "Model Evaluation"],
-    logo: "https://firesafe.live/wp-content/uploads/2024/08/FireSafe_Logo_Secondary_Black.png",
+    logo: "/organization-logos/firesafe-original.png",
     logoAlt: "FireSafe AI logo",
     initials: "FS",
     accent: "#ff7a45",
@@ -189,7 +189,7 @@ export const selectedExperience: SelectedExperience[] = [
       "Supported senior-course delivery with practical engineering feedback and mentorship.",
     ],
     tags: ["CI/CD", "Automated Testing", "GitHub Actions", "Software Quality", "DevOps"],
-    logo: "https://www.ualberta.ca/favicon.ico",
+    logo: "/organization-logos/ualberta-original.ico",
     logoAlt: "University of Alberta logo",
     initials: "UA",
     accent: "#ffcf3f",
@@ -211,7 +211,7 @@ export const selectedExperience: SelectedExperience[] = [
       "Documented model behavior and deployment architecture for medical AI development discussions.",
     ],
     tags: ["Python", "PyTorch", "TensorFlow", "LSTM", "Model Evaluation"],
-    logo: "https://medwatchtech.com/wp-content/uploads/2023/07/MWT-300x50.jpg",
+    logo: "/organization-logos/medwatch-original.jpg",
     logoAlt: "MedWatch Technologies logo",
     initials: "MW",
     accent: "#7cff9d",

@@ -27,6 +27,8 @@ import {
 } from "react";
 import cyberpunkHero from "./assets/cyberpunk-xr-lab.webp";
 import optimizedProjectMedia from "./optimizedProjectMedia.json";
+import { publicAsset } from "./publicAsset";
+import SceneErrorBoundary from "./components/SceneErrorBoundary";
 import {
   certifications,
   education,
@@ -307,15 +309,18 @@ function revealAnchoredSection(target: HTMLElement) {
 }
 
 function useCyberInteractions(dependency: string) {
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)", false);
+  const pointerEligible = useMediaQuery("(pointer: fine) and (min-width: 1120px)", false);
   useEffect(() => {
-    const root = document.documentElement;
-    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
     const canUsePointerEffects =
-      !reduceMotionQuery.matches &&
-      !coarsePointerQuery.matches &&
-      window.innerWidth >= 1120 &&
+      !reducedMotion && pointerEligible &&
       (navigator.hardwareConcurrency ?? 8) >= 6;
+    const hero = document.querySelector<HTMLElement>(".hero-section");
+    const heroVisual = document.querySelector<HTMLElement>(".hero-visual");
+    const cursor = document.querySelector<HTMLElement>(".cursor-aura");
+    const progressIndicator = document.querySelector<HTMLElement>(".scroll-progress");
+    const ambientGrid = document.querySelector<HTMLElement>(".ambient-grid");
+    const scrollingBackground = window.matchMedia("(max-width: 860px)");
     const tiltElements = canUsePointerEffects
       ? Array.from(document.querySelectorAll<HTMLElement>("[data-tilt]"))
       : [];
@@ -326,11 +331,13 @@ function useCyberInteractions(dependency: string) {
     let globalPointerFrame: number | null = null;
     let scrollFrame: number | null = null;
     let latestPointer: PointerEvent | null = null;
+    const pendingInteractions = new Map<HTMLElement, { event: PointerEvent; magnetic: boolean }>();
 
     const updateScrollProgress = () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-      root.style.setProperty("--scroll-progress", `${progress}`);
+      if (progressIndicator) progressIndicator.style.width = `${progress * 100}%`;
+      ambientGrid?.style.setProperty("--grid-scroll", `${scrollingBackground.matches ? -(window.scrollY % 112) : 0}px`);
     };
 
     const requestScrollProgress = () => {
@@ -342,17 +349,34 @@ function useCyberInteractions(dependency: string) {
     };
 
     const applyGlobalPointer = () => {
-      if (!latestPointer) return;
-
-      root.style.setProperty("--pointer-x", `${latestPointer.clientX}px`);
-      root.style.setProperty("--pointer-y", `${latestPointer.clientY}px`);
-      const safeWidth = Math.max(window.innerWidth, 1);
-      const safeHeight = Math.max(window.innerHeight, 1);
-      const normalizedX = latestPointer.clientX / safeWidth - 0.5;
-      const normalizedY = latestPointer.clientY / safeHeight - 0.5;
-      root.style.setProperty("--pointer-pan-x", `${normalizedX * 22}px`);
-      root.style.setProperty("--pointer-pan-y", `${normalizedY * 16}px`);
       globalPointerFrame = null;
+      // Read every affected box before writing styles, once per displayed frame.
+      const updates = Array.from(pendingInteractions, ([element, { event, magnetic }]) => {
+        const rect = element.getBoundingClientRect();
+        return { element, magnetic, x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height };
+      });
+      pendingInteractions.clear();
+      if (latestPointer) {
+        for (const element of [hero, cursor, document.querySelector<HTMLElement>(".modal-layer")]) {
+          element?.style.setProperty("--pointer-x", `${latestPointer.clientX}px`);
+          element?.style.setProperty("--pointer-y", `${latestPointer.clientY}px`);
+        }
+        heroVisual?.style.setProperty("--pointer-pan-x", `${(latestPointer.clientX / Math.max(window.innerWidth, 1) - 0.5) * 22}px`);
+        heroVisual?.style.setProperty("--pointer-pan-y", `${(latestPointer.clientY / Math.max(window.innerHeight, 1) - 0.5) * 16}px`);
+      }
+      for (const { element, magnetic, x, y } of updates) {
+        if (magnetic) {
+          element.style.setProperty("--magnetic-x", `${(x - 0.5) * 12}px`);
+          element.style.setProperty("--magnetic-y", `${(y - 0.5) * 8}px`);
+          element.classList.add("is-magnetic");
+        } else {
+          element.style.setProperty("--hot-x", `${x * 100}%`);
+          element.style.setProperty("--hot-y", `${y * 100}%`);
+          element.style.setProperty("--tilt-x", `${(0.5 - y) * 8}deg`);
+          element.style.setProperty("--tilt-y", `${(x - 0.5) * 10}deg`);
+          element.classList.add("is-armed");
+        }
+      }
     };
 
     const handlePointerMove = (event: PointerEvent) => {
@@ -363,17 +387,12 @@ function useCyberInteractions(dependency: string) {
 
     const cleanups = tiltElements.map((element) => {
       const handleTiltMove = (event: PointerEvent) => {
-        const rect = element.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width;
-        const y = (event.clientY - rect.top) / rect.height;
-        element.style.setProperty("--hot-x", `${x * 100}%`);
-        element.style.setProperty("--hot-y", `${y * 100}%`);
-        element.style.setProperty("--tilt-x", `${(0.5 - y) * 8}deg`);
-        element.style.setProperty("--tilt-y", `${(x - 0.5) * 10}deg`);
-        element.classList.add("is-armed");
+        pendingInteractions.set(element, { event, magnetic: false });
+        handlePointerMove(event);
       };
 
       const handleTiltLeave = () => {
+        pendingInteractions.delete(element);
         element.style.setProperty("--tilt-x", "0deg");
         element.style.setProperty("--tilt-y", "0deg");
         element.style.setProperty("--hot-x", "50%");
@@ -391,15 +410,12 @@ function useCyberInteractions(dependency: string) {
 
     const magneticCleanups = magneticElements.map((element) => {
       const handleMagneticMove = (event: PointerEvent) => {
-        const rect = element.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width - 0.5;
-        const y = (event.clientY - rect.top) / rect.height - 0.5;
-        element.style.setProperty("--magnetic-x", `${x * 12}px`);
-        element.style.setProperty("--magnetic-y", `${y * 8}px`);
-        element.classList.add("is-magnetic");
+        pendingInteractions.set(element, { event, magnetic: true });
+        handlePointerMove(event);
       };
 
       const handleMagneticLeave = () => {
+        pendingInteractions.delete(element);
         element.style.setProperty("--magnetic-x", "0px");
         element.style.setProperty("--magnetic-y", "0px");
         element.classList.remove("is-magnetic");
@@ -435,6 +451,17 @@ function useCyberInteractions(dependency: string) {
     return () => {
       cleanups.forEach((cleanup) => cleanup());
       magneticCleanups.forEach((cleanup) => cleanup());
+      for (const element of tiltElements) {
+        ["--tilt-x", "--tilt-y", "--hot-x", "--hot-y"].forEach((property) => element.style.removeProperty(property));
+        element.classList.remove("is-armed");
+      }
+      for (const element of magneticElements) {
+        ["--magnetic-x", "--magnetic-y"].forEach((property) => element.style.removeProperty(property));
+        element.classList.remove("is-magnetic");
+      }
+      for (const element of [hero, cursor, heroVisual]) {
+        ["--pointer-x", "--pointer-y", "--pointer-pan-x", "--pointer-pan-y"].forEach((property) => element?.style.removeProperty(property));
+      }
       observer.disconnect();
       if (globalPointerFrame !== null) {
         window.cancelAnimationFrame(globalPointerFrame);
@@ -446,7 +473,7 @@ function useCyberInteractions(dependency: string) {
       window.removeEventListener("scroll", requestScrollProgress);
       window.removeEventListener("resize", requestScrollProgress);
     };
-  }, [dependency]);
+  }, [dependency, reducedMotion, pointerEligible]);
 }
 
 function useInitialHashScroll() {
@@ -529,6 +556,7 @@ function useActiveSection() {
     const hashSync = window.setTimeout(requestActiveSectionUpdate, 160);
     const lateHashSync = window.setTimeout(requestActiveSectionUpdate, 700);
     window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+    window.addEventListener("resize", requestActiveSectionUpdate);
     window.addEventListener("hashchange", requestActiveSectionUpdate);
 
     return () => {
@@ -538,6 +566,7 @@ function useActiveSection() {
         window.cancelAnimationFrame(frame);
       }
       window.removeEventListener("scroll", requestActiveSectionUpdate);
+      window.removeEventListener("resize", requestActiveSectionUpdate);
       window.removeEventListener("hashchange", requestActiveSectionUpdate);
     };
   }, []);
@@ -688,7 +717,7 @@ function ProjectVisual({
   );
   const shouldLoadStaticMedia = eager || isNearViewport;
   const optimizedMedia = image
-    ? (optimizedProjectMedia as Record<string, { animated?: string; still: string }>)[image]
+    ? (optimizedProjectMedia as Record<string, { animated?: string; still?: string }>)[image]
     : undefined;
 
   const placeholder = (extraClass = "") => (
@@ -715,17 +744,24 @@ function ProjectVisual({
     return (
       <div ref={mediaRef} className="project-visual has-media" data-visual={visualKey}>
         <picture>
-          {optimizedMedia && (
-            <source media="(prefers-reduced-motion: reduce)" srcSet={optimizedMedia.still} type="image/webp" />
+          {optimizedMedia?.still && (
+            <source media="(prefers-reduced-motion: reduce)" srcSet={publicAsset(optimizedMedia.still)} type="image/webp" />
           )}
-          {optimizedMedia?.animated && <source srcSet={optimizedMedia.animated} type="image/webp" />}
+          {optimizedMedia?.animated && <source srcSet={publicAsset(optimizedMedia.animated)} type="image/webp" />}
           <img
-            src={image}
+            src={publicAsset(image)}
             alt={`${title} preview`}
             loading={eager || isAnimatedImage ? "eager" : "lazy"}
             decoding="async"
             fetchPriority={eager ? "high" : "low"}
             onError={(event) => {
+              const target = event.currentTarget;
+              const sources = target.closest("picture")?.querySelectorAll("source");
+              if (sources?.length) {
+                sources.forEach((source) => source.remove());
+                target.src = publicAsset(image);
+                return;
+              }
               event.currentTarget.closest(".project-visual")?.classList.remove("has-media");
               event.currentTarget.remove();
             }}
@@ -748,7 +784,7 @@ function ProjectVisual({
           {previewItems.map((item, itemIndex) => (
             <img
               key={item}
-              src={item}
+              src={publicAsset(item)}
               alt={`${title} visual ${itemIndex + 1}`}
               loading="lazy"
               decoding="async"
@@ -850,14 +886,13 @@ function PortfolioModeSwitcher({
 }
 
 function Header({
-  activeSection,
   portfolioMode,
   onModeSelect,
 }: {
-  activeSection: string;
   portfolioMode: PortfolioMode;
   onModeSelect: (event: MouseEvent<HTMLAnchorElement>, mode: PortfolioMode) => void;
 }) {
+  const activeSection = useActiveSection();
   const [menuOpen, setMenuOpen] = useState(false);
   const compactNavigation = useMediaQuery("(max-width: 960px)", true);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -1179,7 +1214,7 @@ function ProjectModal({
                 {project.gallery.map((item, itemIndex) => (
                   <img
                     key={item}
-                    src={item}
+                    src={publicAsset(item)}
                     alt={`${project.title} gallery visual ${itemIndex + 1}`}
                     loading="lazy"
                     decoding="async"
@@ -1249,7 +1284,7 @@ function SelectedExperienceCard({
           <span>{role.initials}</span>
           {role.logo && (
             <img
-              src={role.logo}
+              src={publicAsset(role.logo)}
               alt={role.logoAlt ?? `${role.company} logo`}
               loading="lazy"
               decoding="async"
@@ -1327,7 +1362,7 @@ function EducationSection() {
           >
             <div className="education-icon-frame" aria-hidden="true">
               {item.logo ? (
-                <img src={item.logo} alt="" loading="lazy" decoding="async" />
+                <img src={publicAsset(item.logo)} alt="" loading="lazy" decoding="async" />
               ) : (
                 <span>{item.initials}</span>
               )}
@@ -1399,7 +1434,7 @@ function TechnicalStackSection({
                   >
                     <span className="stack-chip-mark" aria-hidden="true">
                       {skill.logo ? (
-                        <img src={skill.logo} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                        <img src={publicAsset(skill.logo)} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                       ) : (
                         skill.mark ?? skill.name.slice(0, 2).toUpperCase()
                       )}
@@ -1433,14 +1468,47 @@ function TechnicalStackSection({
   );
 }
 
+function HeroVisual({ modeContent }: { modeContent: (typeof portfolioModeContent)[PortfolioMode] }) {
+  const useStaticHeroScene = useMediaQuery("(max-width: 860px)", true);
+  const [heroVisualRef, isHeroVisible] = useViewportPresence<HTMLDivElement>("180px 0px");
+  const canLoadHeroScene = useIdleActivation(!useStaticHeroScene && isHeroVisible);
+  return (
+    <div ref={heroVisualRef} className="hero-visual" aria-hidden="true">
+      <div className="hero-hologram">
+        <div className="hero-holo-grid" />
+        <div className="hero-glow" />
+        <div className="hero-connector" />
+        {useStaticHeroScene || !canLoadHeroScene ? (
+          <HeroSceneStaticFallback />
+        ) : (
+          <SceneErrorBoundary fallback={<HeroSceneStaticFallback />}>
+            <Suspense fallback={<div className="hero-scene-placeholder" aria-hidden="true" />}>
+              <HeroScene active={isHeroVisible} />
+            </Suspense>
+          </SceneErrorBoundary>
+        )}
+        <div className="hero-scanline" />
+        {modeContent.systemLabels.map((label, index) => (
+          <div className={`hero-system-label hero-system-label-${index + 1}`} key={`${label.code}-${label.label}`}>
+            <span>{label.code}</span>
+            <strong>{label.label}</strong>
+          </div>
+        ))}
+        {modeContent.signalCards.map((signal, index) => (
+          <div className={`hero-signal-card hero-signal-card-${index + 1}`} key={signal.label}>
+            <strong>{signal.value}</strong>
+            <span>{signal.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [portfolioMode, setPortfolioMode] = useState<PortfolioMode>(getPortfolioModeFromPath);
   useCyberInteractions(portfolioMode);
   useInitialHashScroll();
-  const activeSection = useActiveSection();
-  const useStaticHeroScene = useMediaQuery("(max-width: 860px)", true);
-  const [heroVisualRef, isHeroVisible] = useViewportPresence<HTMLDivElement>("180px 0px");
-  const canLoadHeroScene = useIdleActivation(!useStaticHeroScene && isHeroVisible);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const modeContent = portfolioModeContent[portfolioMode];
   const selectedProject =
@@ -1501,11 +1569,11 @@ function App() {
 
   return (
     <div className="site-shell" style={shellStyle} data-portfolio-mode={portfolioMode}>
+      <div className="ambient-grid" aria-hidden="true"><span /><span /></div>
       <div className="photo-backdrop" aria-hidden="true" />
       <div className="cursor-aura" aria-hidden="true" />
       <div className="scroll-progress" aria-hidden="true" />
       <Header
-        activeSection={activeSection}
         portfolioMode={portfolioMode}
         onModeSelect={handlePortfolioModeSelect}
       />
@@ -1571,33 +1639,7 @@ function App() {
             </div>
           </div>
 
-          <div ref={heroVisualRef} className="hero-visual" aria-hidden="true">
-            <div className="hero-hologram">
-              <div className="hero-holo-grid" />
-              <div className="hero-glow" />
-              <div className="hero-connector" />
-              {useStaticHeroScene || !canLoadHeroScene ? (
-                <HeroSceneStaticFallback />
-              ) : (
-                <Suspense fallback={<div className="hero-scene-placeholder" aria-hidden="true" />}>
-                  <HeroScene active={isHeroVisible} />
-                </Suspense>
-              )}
-              <div className="hero-scanline" />
-              {modeContent.systemLabels.map((label, index) => (
-                <div className={`hero-system-label hero-system-label-${index + 1}`} key={`${label.code}-${label.label}`}>
-                  <span>{label.code}</span>
-                  <strong>{label.label}</strong>
-                </div>
-              ))}
-              {modeContent.signalCards.map((signal, index) => (
-                <div className={`hero-signal-card hero-signal-card-${index + 1}`} key={signal.label}>
-                  <strong>{signal.value}</strong>
-                  <span>{signal.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <HeroVisual modeContent={modeContent} />
 
           <ul className="hero-tags" aria-label="Core focus areas">
             {modeContent.heroTags.map((tag, index) => (
@@ -1707,7 +1749,7 @@ function App() {
           <div className="page-kicker">Welcome To My World</div>
           <div className="about-layout">
             <div className="portrait-frame" data-tilt>
-              <img src={profile.portrait} alt={profile.name} loading="lazy" />
+              <img src={publicAsset(profile.portrait)} alt={profile.name} width={1200} height={1600} loading="lazy" decoding="async" />
             </div>
             <div className="about-copy">
               <p className="eyebrow">About Geoffrey</p>
@@ -1783,7 +1825,7 @@ function App() {
                 <Mail aria-hidden="true" size={18} />
                 Email Me
               </a>
-              <a className="contact-action" href="/resume.pdf" download aria-label="Download Geoffrey Lazer resume PDF">
+              <a className="contact-action" href={publicAsset("/resume.pdf")} download aria-label="Download Geoffrey Lazer resume PDF">
                 <FileDown aria-hidden="true" size={18} />
                 Download Resume
               </a>
