@@ -1,0 +1,154 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.51in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pageanchor=false}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{0.96}
+\pagenumbering{gobble}
+
+\setlist[itemize]{
+    leftmargin=*,
+    noitemsep,
+    topsep=0pt,
+    parsep=0pt,
+    partopsep=0pt
+}
+
+\titleformat{\section}
+{\small\bfseries}
+{}
+{0em}
+{}
+[\titlerule]
+
+\titlespacing*{\section}
+{0pt}
+{3pt}
+{1.5pt}
+
+% Standalone Overleaf source: paste into main.tex and compile with pdfLaTeX.
+% STAR bullets combine context/task, personal action, and a supported outcome.
+% XpertVR is current role scope; its future validation targets are not achievements.
+\begin{document}
+
+\begin{center}
+    {\Large \textbf{Geoffrey Lazer}}\\[-2pt]
+    Edmonton, AB
+    \;|\;
+    \href{mailto:allenlazer9@gmail.com}{allenlazer9@gmail.com}
+    \;|\;
+    +1 (780) 716-4875
+    \;|\;
+    \href{https://linkedin.com/in/geoffrey-lazer-09b0901b2}{LinkedIn}\\[-2pt]
+    \href{https://geoff-portfolio-github-io.vercel.app/ai-ml/}{Portfolio: AI/ML} \;|\; Available April 2027 \;|\; Open to roles across Canada
+\end{center}
+
+\section{Professional Summary}
+
+AI/ML and software engineer with an MSc in Computing Science. Builds wildfire and sensor-data pipelines, model experiments and AI backend prototypes with reproducible validation, error analysis and technical documentation.
+
+\section{Technical Skills}
+
+{\small
+\textbf{ML / data:} Python, PyTorch, TensorFlow, scikit-learn, pandas, NumPy, SQL, LSTM, U-Net\\[-1pt]
+\textbf{AI / backend:} FastAPI, LangGraph, RAG, Pydantic, PostgreSQL, Redis, structured outputs\\[-1pt]
+\textbf{Delivery / evaluation:} Git, Docker, GitHub Actions, pytest, MLflow, dbt, model benchmarking
+}
+
+\section{Professional Experience}
+
+\textbf{XpertVR}
+\hfill Ontario\\
+\textit{Unity VR / AI Developer - Fixed-term contract}
+\hfill Oct 2026 -- Present
+
+\begin{itemize}
+    \item Current R\&D scope: connect AI/LLM communication with live Unity simulation state and translate participant instructions into bounded tasks for VR training.
+    \item Responsibilities include AI guardrails, validation, NPC/speech integration, response-latency optimization and VR performance testing.
+\end{itemize}
+
+\textbf{University of Alberta}
+\hfill Edmonton, Alberta\\
+\textit{XR/ML Engineer}
+\hfill May 2026 -- Present
+
+\begin{itemize}
+    \item For ergonomic review, integrated synchronized motion, risk highlighting and spoken guidance into a Unity/OpenXR Quest 3 prototype.
+    \item Integrated authenticated RunPod processing and coaching-package imports to load new participant sessions without rebuilding the APK.
+    \item Implemented model-driven warnings, reproducible study scheduling and CSV logging for construction-safety experiments, delivering signed Quest builds and maintenance guides.
+\end{itemize}
+
+\textbf{FireSafe AI}
+\hfill Edmonton, Alberta\\
+\textit{Machine Learning Engineer}
+\hfill Oct 2025 -- May 2026
+
+\begin{itemize}
+    \item Built Python ETL joining Canadian/U.S. wildfire events, weather and geospatial records into standardized ML datasets for wildfire-spread modeling.
+    \item Automated normalization, weather aggregation and event construction, generating consistent 15-day multivariate sequences for training and evaluation.
+    \item Developed multiclass/binary rate-of-spread classifiers and regime-specific regressors, with reusable validation, benchmarking and inference workflows.
+    \item Investigated class imbalance, anomalous predictions and data-quality issues; documented assumptions, failure cases and technical decisions for reproducible team handoff.
+\end{itemize}
+
+\textbf{Luxsonic Technologies Inc.}
+\hfill Saskatoon, Saskatchewan\\
+\textit{Software Developer (Internship)}
+\hfill May 2025 -- Aug 2025
+
+\begin{itemize}
+    \item For immersive medical-data review, built Unity/C\# volume visualization, OpenXR input and offline Vosk transcription; explored C++/VTK DICOM mesh extraction.
+\end{itemize}
+
+\textbf{University of Alberta}
+\hfill Edmonton, Alberta\\
+\textit{Graduate Teaching Assistant, CMPUT 402}
+\hfill Jan 2025 -- Apr 2025
+
+\begin{itemize}
+    \item Guided CMPUT 402 teams in CI/CD and automated testing with GitHub Actions, JUnit, SonarQube and mutation testing, providing actionable software-quality feedback.
+\end{itemize}
+
+\textbf{MedWatch Technologies Inc.}
+\hfill Edmonton, Alberta\\
+\textit{AI/ML Researcher}
+\hfill Oct 2024 -- Dec 2024
+
+\begin{itemize}
+    \item For optical-sensor glucose prediction, built sequence preprocessing, LSTM regression and DQN device-configuration experiments, enabling comparison with an LSTM baseline.
+\end{itemize}
+
+\section{Selected AI \& Data Projects}
+
+\textbf{Agentic Data Assistant for Business Operations}
+\hfill Prototype
+
+\begin{itemize}
+    \item To answer document/database questions, built FastAPI/LangGraph RAG and SQL routing, returning structured answers with sources, tool metadata and trace IDs.
+    \item Implemented SELECT-only SQL, allowlists and row limits to constrain access; added MLflow evaluation, dbt tests, pytest, Docker Compose and CI for repeatable validation.
+\end{itemize}
+
+\textbf{Domain-Adaptive Water Body Extraction}
+\hfill Sep 2024 -- Dec 2024
+
+\begin{itemize}
+    \item For cross-sensor water extraction, prepared 256x256 Sentinel patches and explored LU-Net/pix2pix adaptation, producing ground-truth mask comparisons for evaluation.
+\end{itemize}
+
+\section{Education}
+
+\textbf{University of Alberta}
+\hfill Edmonton, Alberta\\
+MSc, Computing Science
+\hfill Sep 2024 -- Jul 2026
+
+\textbf{Loyola-ICAM College of Engineering and Technology}
+\hfill Chennai, India\\
+BE, Computer Science and Engineering
+\hfill Jul 2020 -- Jun 2024
+
+\end{document}

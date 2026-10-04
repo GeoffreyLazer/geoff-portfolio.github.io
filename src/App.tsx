@@ -1825,9 +1825,23 @@ function App() {
                 <Mail aria-hidden="true" size={18} />
                 Email Me
               </a>
-              <a className="contact-action" href={publicAsset("/resume.pdf")} download aria-label="Download Geoffrey Lazer resume PDF">
+              <a
+                className="contact-action"
+                href={publicAsset("/resumes/Geoffrey_Lazer_AI_ML_Resume.pdf")}
+                download
+                aria-label="Download Geoffrey Lazer AI/ML resume PDF"
+              >
                 <FileDown aria-hidden="true" size={18} />
-                Download Resume
+                AI/ML Resume
+              </a>
+              <a
+                className="contact-action"
+                href={publicAsset("/resumes/Geoffrey_Lazer_XR_Resume.pdf")}
+                download
+                aria-label="Download Geoffrey Lazer Unity/XR resume PDF"
+              >
+                <FileDown aria-hidden="true" size={18} />
+                Unity/XR Resume
               </a>
               <a
                 className="contact-action"

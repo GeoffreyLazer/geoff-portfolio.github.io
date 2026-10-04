@@ -109,12 +109,35 @@ export const stats = [
   { value: "SWE", label: "React, APIs, data systems" },
 ];
 
+const xpertVrExperience: WorkExperience = {
+  title: "Unity VR / AI Developer",
+  company: "XpertVR",
+  location: "Ontario, Canada · Remote",
+  date: "Oct 2026 – Present",
+  text: "Current R&D scope: AI-enabled communication and controlled simulation tasks for Unity-based VR training in emergency response and safety.",
+  bullets: [
+    "Working on state-aware AI and LLM communication connected to live Unity simulation conditions.",
+    "Role responsibilities include translating participant instructions into bounded simulation tasks, with guardrails and validation for AI-generated responses.",
+    "Scope includes NPC, animation, and speech integration, AI response-latency optimization, and VR integration and performance testing.",
+  ],
+  tags: ["Unity", "C#", "VR/XR", "LLM Integration", "AI Guardrails", "Runtime Performance"],
+};
+
 export const selectedExperience: SelectedExperience[] = [
   {
-    title: "XR Research Developer",
+    ...xpertVrExperience,
+    initials: "XV",
+    accent: "#19e6ff",
+    signal: "XR + AI R&D",
+    visualLabel: "AI-enabled VR training",
+    tracks: ["ai-ml", "xr"],
+    trackPriority: { "ai-ml": 1, xr: 1 },
+  },
+  {
+    title: "XR/ML Engineer",
     company: "University of Alberta",
     location: "Edmonton, AB",
-    date: "2026 – Present",
+    date: "May 2026 – Present",
     text: "Developed and deployed Meta Quest 3 research prototypes for ergonomic coaching and construction-safety experiments.",
     bullets: [
       "Built mixed reality coaching with three synchronized body views, risk scores, spoken guidance, 50 recording slots, and authenticated RunPod package imports.",
@@ -128,7 +151,6 @@ export const selectedExperience: SelectedExperience[] = [
     accent: "#7cff9d",
     signal: "XR R&D",
     visualLabel: "Civil engineering XR research",
-    sourceNote: "Confirm the official role title and start month before final resume use.",
     tracks: ["xr"],
     trackPriority: { xr: 1 },
   },
@@ -136,7 +158,7 @@ export const selectedExperience: SelectedExperience[] = [
     title: "Machine Learning Engineer",
     company: "FireSafe AI",
     location: "Edmonton, AB",
-    date: "Oct 2025 – Mar 2026",
+    date: "Oct 2025 – May 2026",
     text: "Built ML workflows for wildfire risk and rate-of-spread prediction.",
     bullets: [
       "Building machine learning models for wildfire risk and rate-of-spread prediction using spatiotemporal datasets.",
@@ -155,8 +177,8 @@ export const selectedExperience: SelectedExperience[] = [
     trackPriority: { "ai-ml": 1 },
   },
   {
-    title: "Software Developer Intern",
-    company: "Luxsonic Technologies",
+    title: "Software Developer (Internship)",
+    company: "Luxsonic Technologies Inc.",
     location: "Saskatoon, Saskatchewan",
     date: "May 2025 – Aug 2025",
     text: "Built Unity/XR tooling for real-time medical visualization workflows.",
@@ -245,11 +267,12 @@ export const selectedExperience: SelectedExperience[] = [
 ];
 
 export const workExperience: WorkExperience[] = [
+  xpertVrExperience,
   {
-    title: "XR Research Developer",
+    title: "XR/ML Engineer",
     company: "University of Alberta",
     location: "Edmonton, AB",
-    date: "2026 – Present",
+    date: "May 2026 – Present",
     text: "Developed and deployed Meta Quest 3 research prototypes for ergonomic coaching and construction-safety experiments.",
     bullets: [
       "Built mixed reality coaching with three synchronized body views, risk scores, spoken guidance, 50 recording slots, and authenticated RunPod package imports.",
@@ -257,13 +280,12 @@ export const workExperience: WorkExperience[] = [
       "Validated ergonomic coaching with 15 automated checks and 72.1 average FPS in a representative headset test; delivered signed construction-safety builds and data-preserving updates.",
     ],
     tags: ["Unity", "C#", "OpenXR", "Meta Quest 3", "RunPod", "REST APIs", "CSV Analytics"],
-    sourceNote: "Confirm the official role title and start month before final resume use.",
   },
   {
     title: "Machine Learning Engineer",
     company: "FireSafe AI",
     location: "Edmonton, AB",
-    date: "Oct 2025 – Mar 2026",
+    date: "Oct 2025 – May 2026",
     text: "Built ML workflows for wildfire risk and rate-of-spread prediction.",
     bullets: [
       "Building machine learning models for wildfire risk and rate-of-spread prediction using spatiotemporal datasets.",
@@ -273,7 +295,7 @@ export const workExperience: WorkExperience[] = [
     tags: ["Python", "LSTM", "Time Series", "Data Pipelines", "Model Evaluation"],
   },
   {
-    title: "Software Developer Internship",
+    title: "Software Developer (Internship)",
     company: "Luxsonic Technologies Inc.",
     location: "Saskatoon, Saskatchewan, Canada",
     date: "May 2025 - Aug 2025",
