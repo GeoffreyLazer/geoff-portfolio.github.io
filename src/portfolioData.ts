@@ -25,6 +25,12 @@ export type ProjectCaseStudy = {
   result: string;
 };
 
+export type ProjectTechnicalSection = {
+  title: string;
+  paragraphs: string[];
+  rows?: { label: string; value: string }[];
+};
+
 export type Project = {
   title: string;
   date: string;
@@ -36,8 +42,11 @@ export type Project = {
   featuredPriority?: Partial<Record<PortfolioMode, number>>;
   details?: ProjectDetails;
   caseStudy?: ProjectCaseStudy;
+  technicalSections?: ProjectTechnicalSection[];
   image?: string;
+  imageFit?: "contain";
   gallery?: string[];
+  galleryCaptions?: string[];
   links?: ProjectLink[];
 };
 
@@ -527,6 +536,46 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: "PST-Based Brain MRI Classification",
+    date: "2025 · Academic team project",
+    category: "Medical Computer Vision",
+    image: "/project-media/pst-brain-mri-preview.png",
+    imageFit: "contain",
+    gallery: ["/project-media/pst-brain-mri-filtering.png"],
+    galleryCaptions: ["Notebook comparison: raw PST GPU output and connected-component filtering of small regions."],
+    text: "An academic computer-vision prototype exploring physics-inspired image preprocessing and CNN classification of brain MRI images.",
+    bullets: [
+      "Implemented most of the preprocessing, CNN training, and evaluation workflow within a team project.",
+      "Integrated PhyCV's Phase Stretch Transform, connected-component filtering, and CLAHE with a TensorFlow/Keras CNN.",
+      "Generated training/validation curves, ROC analysis, and per-class classification reports in a public notebook.",
+    ],
+    tags: ["Python", "TensorFlow", "Keras", "OpenCV", "PhyCV", "CNN", "PST", "scikit-learn"],
+    tracks: ["ai-ml"],
+    featuredPriority: { all: 6, "ai-ml": 3 },
+    caseStudy: {
+      situation:
+        "This academic team project explored how physics-inspired preprocessing could be combined with a learning-based classifier for brain MRI images.",
+      task:
+        "Build an inspectable workflow from MRI-image preprocessing to binary tumor/no-tumor classification, with visualizations for examining image transformations and model behavior.",
+      action:
+        "As the main implementation contributor within the team, I integrated PhyCV's CPU/GPU Phase Stretch Transform implementations, filtered small connected components with OpenCV, resized and normalized images to 128×128, applied CLAHE, and built a three-block TensorFlow/Keras CNN with 32, 64, and 128 filters, a dense layer, dropout, and a sigmoid output. I used an image-level training/validation split and generated learning curves, ROC analysis, a confusion matrix, and per-class precision, recall, and F1 reports.",
+      result:
+        "Produced a public notebook with preprocessing comparisons, CNN training code, and evaluation visuals. The saved outputs use inconsistent evaluation counts—34 validation images in the split output and 51 in the classification report—so they need reconciliation in a single reproducible run before quoting final accuracy or ROC-AUC. The notebook does not establish a separate held-out test result or a measured improvement over a raw-image baseline.",
+    },
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/GeoffreyLazer/MM805_PSTbasedTumorClassification",
+        kind: "github",
+      },
+      {
+        label: "Notebook",
+        href: "https://github.com/GeoffreyLazer/MM805_PSTbasedTumorClassification/blob/main/MM_805_Project.ipynb",
+        kind: "external",
+      },
+    ],
+  },
+  {
     title: "Converting Urban Street Scenes Between Daytime and Nighttime",
     date: "Sep 2024 - Dec 2024",
     category: "Computer Vision",
@@ -539,7 +588,7 @@ export const projects: Project[] = [
     ],
     tags: ["PyTorch", "CycleGAN", "Computer Vision", "GAN", "Image Translation"],
     tracks: ["ai-ml"],
-    featuredPriority: { all: 5, "ai-ml": 3 },
+    featuredPriority: { all: 5, "ai-ml": 4 },
     details: {
       problem:
         "Vision systems often struggle when the same scene appears under different lighting domains, and paired day/night training data is hard to collect.",
@@ -558,36 +607,123 @@ export const projects: Project[] = [
     date: "Sep 2024 - Dec 2024",
     category: "Remote Sensing AI",
     image: "/project-media/domain-water-preview.gif",
+    imageFit: "contain",
     gallery: [
+      "/project-media/domain-water-methodology.jpg",
+      "/project-media/domain-water-lu-net.jpg",
+      "/project-media/domain-water-ground-truth.jpg",
+      "/project-media/domain-water-generated-masks.jpg",
       "/project-media/domain-water-style-transfer-result.webp",
       "/project-media/domain-water-precision-recall.webp",
       "/project-media/domain-water-f1-score.webp",
-      "/project-media/domain-water-preprocessing.svg",
-      "/project-media/domain-water-architecture.svg",
-      "/project-media/domain-water-evaluation.svg",
-      "/project-media/domain-water-style-transfer.svg",
     ],
-    text: "A remote-sensing AI project for water-body extraction under sensor-domain shift.",
+    galleryCaptions: [
+      "Team methodology: separate sensor branches, feature fusion, supervised learning, and target-domain consistency.",
+      "Lightweight U-Net architecture from the team presentation.",
+      "Ground-truth water masks from the presentation's evaluation example.",
+      "Generated water masks for comparison with the ground-truth figure.",
+      "Exploratory Sentinel-2-to-Sentinel-1-style translation; downstream replacement performance is not established.",
+      "Training/validation precision and recall curves; their evaluation protocol needs reconciliation with the results table.",
+      "Training/validation F1 curves; these are separate from the reported results table below.",
+    ],
+    text: "An academic team project studying water segmentation across Sentinel-1 radar and Sentinel-2 optical imagery using feature fusion, unlabeled target data, and sensor-style translation.",
     bullets: [
-      "Created 256x256 Sentinel patch workflows for source, target, and mask data.",
-      "Explored LU-Net and pix2pix-style domain adaptation across Sentinel-1 and Sentinel-2 imagery.",
-      "Evaluated generated water masks against ground-truth patches for extraction quality.",
+      "Completed most of the implementation within the team, including 256×256 patch workflows and segmentation experiments.",
+      "Combined lightweight U-Net sensor branches with feature fusion and consistency learning; explored pix2pix for Sentinel-2-to-Sentinel-1-style translation.",
+      "Documented model configuration, mask comparisons, reported segmentation metrics, and evaluation limitations.",
     ],
     tags: ["PyTorch", "U-Net", "pix2pix", "GAN", "Computer Vision", "Remote Sensing"],
     tracks: ["ai-ml"],
     featuredPriority: { "ai-ml": 2 },
-    details: {
-      problem:
-        "Remote-sensing models can lose reliability when moving between satellite sensors with different imaging characteristics.",
-      built:
-        "A domain-adaptation prototype for water-body extraction using Sentinel patch preprocessing, lightweight U-Net style segmentation, and sensor-domain translation experiments.",
-      approach:
-        "Prepared 256x256 satellite patches, modeled source/target consistency with LU-Net style branches, explored pix2pix translation from Sentinel-2 to Sentinel-1 style imagery, and compared generated masks with ground truth.",
-      role:
-        "Implemented model experiments, preprocessing workflows, and evaluation visuals for the remote-sensing extraction pipeline.",
-      impact:
-        "Created a focused research prototype for studying how domain adaptation can support water extraction when matched sensor data is limited.",
+    caseStudy: {
+      situation:
+        "Water monitoring for flood analysis, drought assessment, and urban management depends on satellite images whose appearance changes across sensors and acquisition conditions. Sentinel-1 radar and Sentinel-2 optical images represent the same landscape differently, creating a domain-shift problem for learned segmentation.",
+      task:
+        "Study an academic water-extraction workflow that combines complementary sensor information, uses unlabeled target imagery for adaptation, and explores whether sensor-style translation could reduce reliance on paired inputs during inference.",
+      action:
+        "I completed most of the implementation within a three-person team. The workflow prepared 256×256 Sentinel-1, Sentinel-2, and mask patches; used lightweight U-Net branches with fused and sensor-specific predictions; combined supervised learning with target-domain consistency; and compared predicted masks with ground truth. The experiments also explored pix2pix translation from optical imagery to a Sentinel-1-like appearance. The presentation documents 15 training epochs on an RTX 2080 with an 8 GB memory budget.",
+      result:
+        "Produced a documented segmentation and adaptation prototype with architecture diagrams, training curves, mask comparisons, and a reported metric table. That table records F1 0.4097 and mean IoU 0.3496 alongside pixel accuracy 0.9413. Its evaluation split and averaging method are unspecified, and the higher training/validation curves need reconciliation with it. These results establish exploratory model behavior; they do not quantify a transfer gain over a baseline or validate replacing real radar data with generated imagery.",
     },
+    technicalSections: [
+      {
+        title: "Dataset and preprocessing",
+        paragraphs: [
+          "Used the published S1S2-Water dataset: paired Sentinel-1/Sentinel-2 GeoTIFF imagery, binary water annotations, and valid-pixel masks. The presentation lists original tiles at 10,980×10,980 pixels; the project prepared smaller 256×256 patches for training and visual comparison.",
+          "The selected inputs were two radar channels and four optical channels. The listed training, validation, and unlabeled counts describe patch images; the presentation does not establish geographically independent splits or whether the validation and unlabeled sets overlap.",
+        ],
+        rows: [
+          { label: "Sentinel-1 input", value: "VV and VH radar bands" },
+          { label: "Sentinel-2 input", value: "B2, B3, B4, and B8 optical bands" },
+          { label: "Patch size", value: "256×256 pixels" },
+          { label: "Training set", value: "5,737 patch images" },
+          { label: "Validation set", value: "1,764 patch images" },
+          { label: "Unlabeled set", value: "1,764 patch images for adaptation" },
+        ],
+      },
+      {
+        title: "Segmentation and domain adaptation",
+        paragraphs: [
+          "The methodology diagram has separate lightweight U-Net branches for Sentinel-1 and Sentinel-2. Their features feed both sensor-specific predictions and a concatenated fusion path. Labeled source patches support supervised learning; unlabeled target patches contribute a consistency term.",
+          "The LU-Net diagram uses 3×3 convolution, batch normalization, and ReLU blocks; 2×2 max-pooling for downsampling; transposed convolutions for upsampling; skip connections to retain spatial detail; and a 1×1 convolution with sigmoid output for a one-channel water mask.",
+        ],
+      },
+      {
+        title: "Training configuration",
+        paragraphs: [
+          "The reported batch size was constrained by GPU memory. Patching made large geospatial rasters manageable, while the remaining sensor-channel and data-handling issues were recorded as limitations.",
+        ],
+        rows: [
+          { label: "GPU", value: "NVIDIA RTX 2080, 8 GB VRAM" },
+          { label: "Batch size", value: "1; approximately 6 GB VRAM used" },
+          { label: "Epochs", value: "15" },
+          { label: "Learning rate", value: "0.0004" },
+          { label: "Optimizer", value: "Adam" },
+          { label: "Reported loss", value: "Power Jaccard loss" },
+        ],
+      },
+      {
+        title: "Reported evaluation",
+        paragraphs: [
+          "These values come from the presentation's results table. The slide does not identify its evaluation split, threshold, or averaging protocol. Pixel accuracy should be read together with F1 and overlap metrics when assessing the quality of the water masks.",
+          "The training/validation F1 plots are much higher than the table's F1. Their metric definitions and evaluation conditions require reconciliation before presenting a single headline performance claim. The mask gallery shows ground-truth and generated outputs as separate figures.",
+        ],
+        rows: [
+          { label: "Precision", value: "0.3155" },
+          { label: "Recall", value: "0.5845" },
+          { label: "F1 score", value: "0.4097" },
+          { label: "Pixel accuracy", value: "0.9413" },
+          { label: "Mean IoU", value: "0.3496" },
+          { label: "Mean Dice coefficient", value: "0.3514" },
+        ],
+      },
+      {
+        title: "Sensor-style translation experiment",
+        paragraphs: [
+          "A separate pix2pix experiment explored transforming Sentinel-2 imagery into a Sentinel-1-like appearance. Its motivation was to investigate a possible missing-sensor inference workflow when paired imagery is unavailable.",
+          "The presentation supplies a visual example, not a downstream segmentation comparison proving that generated imagery can replace a real Sentinel-1 observation. This is an exploratory extension to the segmentation pipeline.",
+        ],
+      },
+      {
+        title: "Contribution and next validation",
+        paragraphs: [
+          "Team: Geoffrey Lazer, Shovon Bhowmick, and Md Alif Rahman Ridoy. I completed most of the implementation; the architecture and reported results are presented as team work.",
+          "The deck records data scarcity, sensor-channel mismatches, and overfitting. The next validation would use consistent metrics and valid-pixel handling, geographically separated data where possible, single-sensor and fusion baselines, and a direct test of real versus translated inputs. The current presentation does not establish those comparisons.",
+        ],
+      },
+    ],
+    links: [
+      {
+        label: "Technical Notes",
+        href: "https://github.com/GeoffreyLazer/geoff-portfolio.github.io/blob/main/docs/projects/domain-adaptive-water-body-extraction.md",
+        kind: "github",
+      },
+      {
+        label: "Dataset Source",
+        href: "https://github.com/MWieland/s1s2_water",
+        kind: "external",
+      },
+    ],
   },
   {
     title: "Shinyonaika 3D - Self Therapy Game",

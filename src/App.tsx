@@ -699,12 +699,14 @@ function getProjectVisualKey(title: string, category: string) {
 
 function ProjectVisual({
   image,
+  imageFit,
   gallery,
   title,
   category,
   eager = false,
 }: {
   image?: string;
+  imageFit?: "contain";
   gallery?: string[];
   title: string;
   category: string;
@@ -742,7 +744,7 @@ function ProjectVisual({
     }
 
     return (
-      <div ref={mediaRef} className="project-visual has-media" data-visual={visualKey}>
+      <div ref={mediaRef} className={`project-visual has-media${imageFit === "contain" ? " is-contained" : ""}`} data-visual={visualKey}>
         <picture>
           {optimizedMedia?.still && (
             <source media="(prefers-reduced-motion: reduce)" srcSet={publicAsset(optimizedMedia.still)} type="image/webp" />
@@ -1006,6 +1008,7 @@ function ProjectCard({
     >
       <ProjectVisual
         image={project.image}
+        imageFit={project.imageFit}
         gallery={project.gallery}
         title={project.title}
         category={project.category}
@@ -1191,6 +1194,7 @@ function ProjectModal({
           <div className="modal-visual">
             <ProjectVisual
               image={project.image}
+              imageFit={project.imageFit}
               gallery={project.gallery}
               title={project.title}
               category={project.category}
@@ -1210,15 +1214,19 @@ function ProjectModal({
             </p>
 
             {project.gallery?.length ? (
-              <div className="project-modal-gallery" aria-label={`${project.title} image gallery`}>
-                {project.gallery.map((item, itemIndex) => (
-                  <img
-                    key={item}
-                    src={publicAsset(item)}
-                    alt={`${project.title} gallery visual ${itemIndex + 1}`}
-                    loading="lazy"
-                    decoding="async"
-                  />
+              <div className={`project-modal-gallery${project.galleryCaptions ? " project-reference-gallery" : ""}`} aria-label={`${project.title} image gallery`}>
+                {project.gallery.map((item, itemIndex) => project.galleryCaptions ? (
+                  <figure key={item}>
+                    <img
+                      src={publicAsset(item)}
+                      alt={project.galleryCaptions[itemIndex] ?? `${project.title} gallery visual ${itemIndex + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {project.galleryCaptions[itemIndex] ? <figcaption>{project.galleryCaptions[itemIndex]}</figcaption> : null}
+                  </figure>
+                ) : (
+                  <img key={item} src={publicAsset(item)} alt={`${project.title} gallery visual ${itemIndex + 1}`} loading="lazy" decoding="async" />
                 ))}
               </div>
             ) : null}
@@ -1239,6 +1247,28 @@ function ProjectModal({
                 </div>
               </article>
             </div>
+            {project.technicalSections?.length ? (
+              <div className="project-detail-grid" aria-label={`${project.title} technical details`}>
+                {project.technicalSections.map((section) => (
+                  <article className="project-detail-block project-technical-block" key={section.title}>
+                    <h3>{section.title}</h3>
+                    {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                    {section.rows?.length ? (
+                      <table className="project-technical-table" aria-label={section.title}>
+                        <tbody>
+                          {section.rows.map((row) => (
+                            <tr key={row.label}>
+                              <th scope="row">{row.label}</th>
+                              <td>{row.value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            ) : null}
             {project.links && (
               <div className="project-links modal-links" aria-label={`${project.title} links`}>
                 {project.links.map((link) => {
