@@ -481,11 +481,6 @@ export const projects: Project[] = [
     },
     links: [
       {
-        label: "GitHub",
-        href: "https://github.com/GeoffreyLazer/3DMedicalImageVisualization-SlicingonXR.git",
-        kind: "github",
-      },
-      {
         label: "YouTube",
         href: "https://youtu.be/wo76y5mV-r4",
         kind: "youtube",
@@ -521,7 +516,7 @@ export const projects: Project[] = [
     links: [
       {
         label: "GitHub",
-        href: "https://github.com/GeoffreyLazer/MM806.git",
+        href: "https://github.com/GeoffreyLazer/Agricultural-Terrain-Visualization-XR",
         kind: "github",
       },
       {
