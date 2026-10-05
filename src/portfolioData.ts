@@ -543,11 +543,11 @@ export const projects: Project[] = [
     imageFit: "contain",
     gallery: ["/project-media/pst-brain-mri-filtering.png"],
     galleryCaptions: ["Notebook comparison: raw PST GPU output and connected-component filtering of small regions."],
-    text: "An academic computer-vision prototype exploring physics-inspired image preprocessing and CNN classification of brain MRI images.",
+    text: "An academic brain MRI classification prototype combining physics-inspired preprocessing with a CNN, reporting 92% accuracy on 51 evaluated images.",
     bullets: [
-      "Implemented most of the preprocessing, CNN training, and evaluation workflow within a team project.",
-      "Integrated PhyCV's Phase Stretch Transform, connected-component filtering, and CLAHE with a TensorFlow/Keras CNN.",
-      "Generated training/validation curves, ROC analysis, and per-class classification reports in a public notebook.",
+      "Completed most of the team project's implementation, preparing 166 labeled MRI images at 128×128 resolution and training a three-block CNN for 100 epochs.",
+      "Reported 92% classification accuracy across 51 evaluated images, with macro F1 0.92 and tumor-class F1 0.93.",
+      "Integrated PhyCV's Phase Stretch Transform, OpenCV filtering, and CLAHE with TensorFlow/Keras; published preprocessing and evaluation visuals.",
     ],
     tags: ["Python", "TensorFlow", "Keras", "OpenCV", "PhyCV", "CNN", "PST", "scikit-learn"],
     tracks: ["ai-ml"],
@@ -558,9 +558,9 @@ export const projects: Project[] = [
       task:
         "Build an inspectable workflow from MRI-image preprocessing to binary tumor/no-tumor classification, with visualizations for examining image transformations and model behavior.",
       action:
-        "As the main implementation contributor within the team, I integrated PhyCV's CPU/GPU Phase Stretch Transform implementations, filtered small connected components with OpenCV, resized and normalized images to 128×128, applied CLAHE, and built a three-block TensorFlow/Keras CNN with 32, 64, and 128 filters, a dense layer, dropout, and a sigmoid output. I used an image-level training/validation split and generated learning curves, ROC analysis, a confusion matrix, and per-class precision, recall, and F1 reports.",
+        "As the main implementation contributor within the team, I prepared 166 labeled MRI images (86 tumor and 80 no-tumor), integrated PhyCV's CPU/GPU Phase Stretch Transform implementations, filtered small connected components with OpenCV, resized and normalized images to 128×128, and applied CLAHE. I built a three-block TensorFlow/Keras CNN with 32, 64, and 128 filters, a dense layer, dropout, and a sigmoid output, configured training for 100 epochs, and generated learning curves, ROC analysis, a confusion matrix, and per-class precision, recall, and F1 reports.",
       result:
-        "Produced a public notebook with preprocessing comparisons, CNN training code, and evaluation visuals. The saved outputs use inconsistent evaluation counts—34 validation images in the split output and 51 in the classification report—so they need reconciliation in a single reproducible run before quoting final accuracy or ROC-AUC. The notebook does not establish a separate held-out test result or a measured improvement over a raw-image baseline.",
+        "Achieved 92% accuracy in the project's reported classification evaluation of 51 MRI images, with macro F1 0.92 and tumor-class F1 0.93. Published a notebook with preprocessing comparisons, CNN training code, learning curves, and evaluation visuals. This is an image-level academic evaluation; the notebook does not establish a patient-level split or a measured improvement over a raw-image baseline.",
     },
     links: [
       {
