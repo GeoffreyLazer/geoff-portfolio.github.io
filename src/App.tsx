@@ -1190,7 +1190,7 @@ function ProjectModal({
           <X aria-hidden="true" size={20} />
         </button>
 
-        <div className="project-modal-scroll">
+        <div className="project-modal-scroll" role="region" aria-label={`Project details for ${project.title}`} tabIndex={0}>
           <div className="modal-visual">
             <ProjectVisual
               image={project.image}

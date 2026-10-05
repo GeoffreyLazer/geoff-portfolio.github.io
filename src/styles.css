@@ -4333,11 +4333,13 @@ main {
 }
 
 .project-modal {
+  --project-modal-height: min(92dvh, 860px);
   position: relative;
   display: grid;
-  grid-template-columns: minmax(270px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   width: min(1180px, 100%);
-  max-height: min(92vh, 860px);
+  max-height: var(--project-modal-height);
   overflow: hidden;
   border: 1px solid rgba(101, 255, 101, 0.24);
   border-radius: 8px;
@@ -4352,7 +4354,18 @@ main {
 }
 
 .project-modal-scroll {
-  display: contents;
+  display: grid;
+  grid-template-columns: minmax(270px, 0.72fr) minmax(0, 1.28fr);
+  min-height: 0;
+  max-height: calc(var(--project-modal-height) - 2px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.project-modal-scroll:focus-visible {
+  outline: 2px solid rgba(101, 255, 101, 0.65);
+  outline-offset: -3px;
 }
 
 .project-modal[data-state="closing"] {
@@ -4406,15 +4419,18 @@ main {
 }
 
 .modal-visual {
-  position: relative;
-  min-height: 100%;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: calc(var(--project-modal-height) - 2px);
+  min-height: 0;
   overflow: hidden;
   border-right: 1px solid rgba(101, 255, 101, 0.18);
 }
 
 .modal-visual .project-visual {
   height: 100%;
-  min-height: 520px;
+  min-height: 0;
   border-bottom: 0;
 }
 
@@ -4453,7 +4469,8 @@ main {
 .modal-content {
   position: relative;
   z-index: 1;
-  overflow: auto;
+  min-width: 0;
+  overflow: visible;
   padding: clamp(26px, 4vw, 46px);
 }
 
@@ -5259,19 +5276,18 @@ main {
   }
 
   .project-modal {
+    --project-modal-height: calc(100dvh - 24px);
     grid-template-columns: 1fr;
-    max-height: calc(100dvh - 24px);
     overflow: hidden;
   }
 
   .project-modal-scroll {
     display: block;
-    max-height: calc(100dvh - 26px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
   }
 
   .modal-visual {
+    position: relative;
+    height: auto;
     min-height: auto;
     border-right: 0;
     border-bottom: 1px solid rgba(101, 255, 101, 0.18);
@@ -5552,11 +5568,7 @@ main {
   }
 
   .project-modal {
-    max-height: calc(100dvh - 16px);
-  }
-
-  .project-modal-scroll {
-    max-height: calc(100dvh - 18px);
+    --project-modal-height: calc(100dvh - 16px);
   }
 
   .modal-visual .project-visual {
